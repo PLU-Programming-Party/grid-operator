@@ -2,58 +2,56 @@
 <h1>
     GRID OPERATOR
 </h1>
-
-<table>
-    <tr>
-        <td onclick="alert('0,0')"></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+<div>
+    <div id="time">
+        time:
+    </div>
+    <div id="dolladollabillsyall">
+        money:
+    </div>
+    <div id="itsover9000">
+        power:
+    </div>
+</div>
+<div id="la_grid">
+</div>
 <style>
     table{width:100%}
     td{height: 50px;border: solid 1px black;}
 </style>
+
+<script>
+    let sur_la_time = 0
+    let sur_la_power = 0
+    let sur_la_money = 100
+    setInterval(function(){
+        document.getElementById("time").innerText="time: " + sur_la_time
+        document.getElementById("dolladollabillsyall").innerText="money: " + sur_la_money
+        document.getElementById("itsover9000").innerText="power: " + sur_la_power
+    }, 100)
+    setInterval(function(){
+        sur_la_time++
+        sur_la_money += (sur_la_power / 60)
+    }, 1000)
+    const rows = 5
+    const columns = 5
+    const sur_la_table = document.createElement("table")
+    for (let i = 0; i < rows; i++) {
+        const tr = document.createElement("tr")
+        sur_la_table.appendChild(tr)
+        for (let j = 0; j < columns; j++) {
+            const power_out = Math.floor(Math.random() * 100)
+            const cost = Math.floor(Math.random() * 100)
+            const td = document.createElement("td")
+            td.innerText=`power: ${power_out}  cost: ${cost}`
+            td.onclick = function(){
+                if (sur_la_money >= cost) {
+                    sur_la_money = sur_la_money - cost
+                    sur_la_power = sur_la_power + power_out
+                }
+            }
+            tr.appendChild(td)
+        }
+    }
+    document.getElementById("la_grid").appendChild(sur_la_table)
+</script> 

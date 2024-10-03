@@ -1,7 +1,24 @@
 <!DOCTYPE html>
-<h1>
-    GRID OPERATOR
-</h1>
+<header>
+    <h1>
+        GRID OPERATOR
+    </h1>
+    <button id="megapause" onclick="sur_la_speedometer = 0">
+        ||
+    </button>
+    <button id="superspeed" onclick="sur_la_speedometer = 1">
+        >
+    </button>
+    <button id="ultrasupermegaspeed" onclick="sur_la_speedometer = 3">
+        >>
+    </button>
+    <button id="play" onclick="sur_la_speedometer = 9">
+        >>>
+    </button>
+    <pre id="demandometer">
+        |###
+    </pre>
+</header>
 <div>
     <div id="time">
         time:
@@ -11,6 +28,9 @@
     </div>
     <div id="itsover9000">
         power:
+    </div>
+    <div id="acciopower">
+        demand:
     </div>
 </div>
 <div id="la_grid">
@@ -24,14 +44,29 @@
     let sur_la_time = 0
     let sur_la_power = 0
     let sur_la_money = 100
+    let sur_la_demand = 0
+    let sur_la_speedometer = 2
+    let sur_la_powerbalance = 0
     setInterval(function(){
         document.getElementById("time").innerText="time: " + sur_la_time
         document.getElementById("dolladollabillsyall").innerText="money: " + sur_la_money
         document.getElementById("itsover9000").innerText="power: " + sur_la_power
+        document.getElementById("acciopower").innerText="demand: " + sur_la_demand
+        let sous_la_hashtag = Array(Math.abs(Math.round(sur_la_powerbalance * 10))).fill('#').join("")
+        const demandometer = document.getElementById("demandometer")
+        if (sur_la_powerbalance >= 0) {
+            demandometer.innerText= "|" + sous_la_hashtag
+            demandometer.style.color="green"
+        } else {
+            demandometer.innerText= sous_la_hashtag + "|"
+            demandometer.style.color="red"
+        }
     }, 100)
     setInterval(function(){
-        sur_la_time++
-        sur_la_money += (sur_la_power / 60)
+        sur_la_time += sur_la_speedometer
+        sur_la_money += sur_la_speedometer * (sur_la_power / 60)
+        sur_la_demand += sur_la_speedometer *  10
+        sur_la_powerbalance = (sur_la_power - sur_la_demand) / (sur_la_power + sur_la_demand)
     }, 1000)
     const rows = 5
     const columns = 5

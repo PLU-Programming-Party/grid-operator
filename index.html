@@ -64,25 +64,27 @@
     }, 100)
     setInterval(function(){
         sur_la_time += sur_la_speedometer
-        sur_la_money += sur_la_speedometer * (sur_la_power / 60)
+        sur_la_money += Math.round(sur_la_speedometer * (Math.min(sur_la_demand, sur_la_power) / 60))
         sur_la_demand += sur_la_speedometer *  10
         sur_la_powerbalance = (sur_la_power - sur_la_demand) / (sur_la_power + sur_la_demand)
     }, 1000)
-    const rows = 5
-    const columns = 5
+    const rows = 3
+    const columns = 2
     const sur_la_table = document.createElement("table")
     for (let i = 0; i < rows; i++) {
         const tr = document.createElement("tr")
         sur_la_table.appendChild(tr)
         for (let j = 0; j < columns; j++) {
             const power_out = Math.floor(Math.random() * 100)
-            const cost = Math.floor(Math.random() * 100)
+            let cost = Math.floor(Math.random() * 100)
             const td = document.createElement("td")
             td.innerText=`power: ${power_out}  cost: ${cost}`
             td.onclick = function(){
                 if (sur_la_money >= cost) {
                     sur_la_money = sur_la_money - cost
                     sur_la_power = sur_la_power + power_out
+                    cost = Math.round(cost * 1.05)
+                    td.innerText=`power: ${power_out}  cost: ${cost}`
                 }
             }
             tr.appendChild(td)

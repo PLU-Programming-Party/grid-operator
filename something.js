@@ -10,6 +10,7 @@ const sur = {
     speedometer: 2,
     powerbalance: 0,
     fossil_fuel: 2000,
+    fossilFuelCost: 0,
     fossil_fuel_plants: [
       { powerOut: 30, fuelConsumption: 1, isOn: true },
       { powerOut: 30, fuelConsumption: 1, isOn: true },
@@ -34,6 +35,13 @@ function saveData() {
   return save;
 }
 
+function buyFossilFuels(amount) {
+  if (amount * sur.la.fossilFuelCost <= sur.la.money) {
+    sur.la.money -= amount * sur.la.fossilFuelCost;
+    sur.la.fossil_fuel += amount;
+  }
+}
+
 document.getElementById("save").addEventListener("click", () => {
   const jack = saveData();
   document.getElementById("saveData").value = jack;
@@ -54,6 +62,8 @@ setInterval(function () {
   document.getElementById("acciopower").innerText = "demand: " + sur.la.demand;
   document.getElementById("fossilFuels:]").innerText =
     "fossil fuels: " + sur.la.fossil_fuel;
+    document.getElementById("buyFossilFuels").innerText =
+    "+1  Cost:" + sur.la.fossilFuelCost;
   let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
     .fill("#")
     .join("");
@@ -109,49 +119,8 @@ setInterval(function () {
     sur.la.fossil_fuel - surLaDirtyPowerConsumption * sur.la.speedometer,
     0
   );
+  sur.la.fossilFuelCost += 1;
 }, 1000);
 
-const sur_la_table = document.createElement("table");
-sur_la_table.id = "sur_la_table";
 
-const solar_tr = document.createElement("tr");
-sur_la_table.appendChild(solar_tr);
-for (let i = 0; i < sur.la.solarPanels.length; i++) {
-  const td = document.createElement("td");
-  td.id = `sur_la_table_${i}`
-  td.style.backgroundColor = "lightBlue";
-  const solarPanel = sur.la.solarPanels[i];
-  td.innerText = `power: ${solarPanel.powerOut}  cost: ${solarPanel.cost}`;
-  // td.innerText = new Date()
-  td.onclick = function () {
-    const solarPanel = sur.la.solarPanels[i];
-    if (sur.la.money >= solarPanel.cost) {
-      sur.la.money = sur.la.money - solarPanel.cost;
-      sur.la.power = sur.la.power + solarPanel.powerOut;
-      solarPanel.cost = Math.round(solarPanel.cost * 1.05);
-      td.innerText = `power: ${solarPanel.powerOut}  cost: ${solarPanel.cost}`;
-    }
-  };
-  solar_tr.appendChild(td);
-}
 
-const soux_la_table = document.createElement("table");
-soux_la_table.id = "soux_la_table";
-
-const tr = document.createElement("tr");
-soux_la_table.appendChild(tr);
-for (let i = 0; i < sur.la.fossil_fuel_plants.length; i++) {
-  const td = document.createElement("td");
-  td.id = `soux_la_table_${i}`
-  td.style.backgroundColor = "lightGrey";
-  const laPlant = sur.la.fossil_fuel_plants[i];
-  td.innerText = `fossil fuel consumption = ${laPlant.fuelConsumption} power = ${laPlant.powerOut}`;
-  td.onclick = function () {
-    const laPlant = sur.la.fossil_fuel_plants[i];
-    laPlant.isOn = !laPlant.isOn;
-  };
-  tr.appendChild(td);
-}
-
-document.getElementById("la_grid").appendChild(sur_la_table);
-document.getElementById("soux_la_grid").appendChild(soux_la_table);

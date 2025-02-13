@@ -14,7 +14,8 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
     const solarPanel = sur.la.solarPanels[i];
     if (sur.la.money >= solarPanel.cost) {
       sur.la.money = sur.la.money - solarPanel.cost;
-      sur.la.power = sur.la.power + solarPanel.powerOut;
+      //sur.la.power = sur.la.power + solarPanel.powerOut;
+      sur.la.inventory.solar_panels.push({powerOut: solarPanel.powerOut});
       solarPanel.cost = Math.round(solarPanel.cost * 1.05);
       td.innerText = `power: ${solarPanel.powerOut}  cost: ${solarPanel.cost}`;
     }

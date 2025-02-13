@@ -21,6 +21,7 @@ const sur = {
       { powerOut: 20, cost: 30 },
       { powerOut: 40, cost: 40 },
     ],
+    inventory:{solar_panels:[{ powerOut: 10 }]},
     totalPower: 0,
   },
 };
@@ -95,6 +96,11 @@ setInterval(function () {
       td.style.backgroundColor = "lightGrey";
     }
   }
+  let stringvalue = "";
+  for(solar_panel of sur.la.inventory.solar_panels) {
+    stringvalue = stringvalue + solar_panel.powerOut + "\n";
+  }
+  document.getElementById("princessDiana").innerText = stringvalue;
 
 }, 100);
 
@@ -107,7 +113,11 @@ setInterval(function () {
       surLaDirtyPowerConsumption += laPlant.fuelConsumption;
     }
   }
-  sur.la.totalPower = surLaDirtyPower + sur.la.power;
+  let surLaCleanPower = 0;
+  for (solar_panel of sur.la.inventory.solar_panels) {
+    surLaCleanPower += solar_panel.powerOut;
+  }
+  sur.la.totalPower = surLaDirtyPower + sur.la.power + surLaCleanPower;
   sur.la.time += sur.la.speedometer;
   sur.la.money += Math.round(
     sur.la.speedometer * (Math.min(sur.la.demand, sur.la.totalPower) / 60)

@@ -1,5 +1,6 @@
 const rows = 3;
 const columns = 2;
+const smoothOp = new Audio('sounds/music.mp3');
 
 const sur = {
   la: {
@@ -25,6 +26,12 @@ const sur = {
     totalPower: 0,
   },
 };
+
+function beepboop(playback) {
+  const audio = new Audio('sounds/Boop-sound-effect.mp3');
+  audio.playbackRate = playback;
+  audio.play();
+}
 
 function loadData(jack) {
   const load = JSON.parse(jack);
@@ -77,11 +84,13 @@ function isDay(time) {
 
 
 document.getElementById("save").addEventListener("click", () => {
+  beepboop(0.25);
   const jack = saveData();
   document.getElementById("saveData").value = jack;
 });
 
 document.getElementById("load").addEventListener("click", () => {
+  beepboop(10.5);
   const newData = document.getElementById("saveData").value;
   loadData(newData);
 });
@@ -89,6 +98,8 @@ document.getElementById("load").addEventListener("click", () => {
 // The pixel flinger express
 setInterval(function () {
   document.getElementById("time").innerText = "time: " + getTimeString(sur.la.time) + "  isDay?: " + isDay(sur.la.time);
+  smoothOp.play();
+  smoothOp.playbackRate = sur.la.speedometer;
   document.getElementById("dolladollabillsyall").innerText =
     "money: " + sur.la.money;
   document.getElementById("itsover9000").innerText =
@@ -129,12 +140,16 @@ setInterval(function () {
       td.style.backgroundColor = "lightGrey";
     }
   }
-  let stringvalue = "";
-  for (solar_panel of sur.la.inventory.solar_panels) {
-    stringvalue = stringvalue + solar_panel.powerOut + "\n";
-  }
-  document.getElementById("princessDiana").innerText = stringvalue;
+  const princessDianaElem = document.getElementById("princessDiana");
+  princessDianaElem.innerText = "";
 
+  for (solar_panel of sur.la.inventory.solar_panels) {
+    const spanElem = document.createElement("span");
+    spanElem.className = "thing";
+    spanElem.style.width = solar_panel.powerOut;
+    spanElem.style.height = solar_panel.powerOut;
+    princessDianaElem.appendChild(spanElem);
+  }
 }, 100);
 
 setInterval(function () {

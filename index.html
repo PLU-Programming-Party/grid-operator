@@ -1,32 +1,42 @@
 <!DOCTYPE html>
+
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
 <header>
   <h1>GRID OPERATOR</h1>
-  <button id="megapause" onclick="sur.la.speedometer = 0">||</button>
-  <button id="superspeed" onclick="sur.la.speedometer = 1">></button>
-  <button id="ultrasupermegaspeed" onclick="sur.la.speedometer = 3">>></button>
-  <button id="play" onclick="sur.la.speedometer = 9">>>></button>
-  <button id="save">Save</button>
-  <button id="load">Load</button>
-  <textarea id="saveData" placeholder="click to save"></textarea>
-  <pre id="demandometer">
-        |###
-    </pre
-  >
+  <div class="resources">
+    <div id="time">time:</div>
+    <div id="dolladollabillsyall">money:</div>
+    <div id="itsover9000">power:</div>
+    <div id="acciopower">demand:</div>
+    <div id="fossilFuels:]">fossil fuels:</div> <button id="buyFossilFuels" onclick="buyFossilFuels(1)">Buy</button>
+    <!-- last; in honor of Nicholas-->
+  </div>
+  <div class="button-container">
+    <button id="megapause" onclick="sur.la.speedometer = 0">||</button>
+    <button id="superspeed" onclick="sur.la.speedometer = 1">></button>
+    <button id="ultrasupermegaspeed" onclick="sur.la.speedometer = 3">>></button>
+    <button id="play" onclick="sur.la.speedometer = 9">>>></button>
+    <button id="save">Save</button>
+    <button id="load">Load</button>
+    <textarea id="saveData" placeholder="click to save"></textarea>
+  </div>
 </header>
-<div>
-  <div id="time">time:</div>
-  <div id="dolladollabillsyall">money:</div>
-  <div id="itsover9000">power:</div>
-  <div id="acciopower">demand:</div>
-  <div id="fossilFuels:]">fossil fuels:</div> <button id="buyFossilFuels" onclick="buyFossilFuels(1)">Buy</button> <!-- last; in honor of Nicholas-->
-</div>
+<pre id="demandometer">
+      |###
+</pre>
+<h3>Renewables Market</h3>
 <div id="la_grid"></div>
+<h3>Non-Renewables Market</h3>
 <div id="soux_la_grid"></div>
-<pre id="princessDiana"></pre>
+<div id="princessDiana"></div>
 <style>
   table {
     width: 101%;
   }
+
   td {
     height: 50px;
     border: solid 1px black;

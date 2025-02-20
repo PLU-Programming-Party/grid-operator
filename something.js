@@ -1,5 +1,6 @@
 const rows = 3;
 const columns = 2;
+const smoothOp = new Audio('sounds/music.mp3');
 
 const sur = {
   la: {
@@ -26,6 +27,12 @@ const sur = {
   },
 };
 
+function beepboop(playback) {
+  const audio = new Audio('sounds/Boop-sound-effect.mp3');
+  audio.playbackRate = playback;
+  audio.play();
+}
+
 function loadData(jack) {
   const load = JSON.parse(jack);
   Object.assign(sur.la, load.la);
@@ -44,17 +51,21 @@ function buyFossilFuels(amount) {
 }
 
 document.getElementById("save").addEventListener("click", () => {
+  beepboop(0.25);
   const jack = saveData();
   document.getElementById("saveData").value = jack;
 });
 
 document.getElementById("load").addEventListener("click", () => {
+  beepboop(10.5);
   const newData = document.getElementById("saveData").value;
   loadData(newData);
 });
 
 // The pixel flinger express
 setInterval(function () {
+  smoothOp.play();
+  smoothOp.playbackRate = sur.la.speedometer;
   document.getElementById("time").innerText = "time: " + sur.la.time;
   document.getElementById("dolladollabillsyall").innerText =
     "money: " + sur.la.money;

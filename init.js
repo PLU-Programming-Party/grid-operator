@@ -1,6 +1,7 @@
 const sur_la_table = document.createElement("table");
 sur_la_table.id = "sur_la_table";
 
+
 const solar_tr = document.createElement("tr");
 sur_la_table.appendChild(solar_tr);
 for (let i = 0; i < sur.la.solarPanels.length; i++) {

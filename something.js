@@ -21,7 +21,7 @@ const sur = {
       { powerOut: 20, cost: 30 },
       { powerOut: 40, cost: 40 },
     ],
-    inventory:{solar_panels:[{ powerOut: 10 }]},
+    inventory: { solar_panels: [{ powerOut: 10 }] },
     totalPower: 0,
   },
 };
@@ -43,6 +43,39 @@ function buyFossilFuels(amount) {
   }
 }
 
+function getTimeString(time) {
+  // year month day hour
+  // 1 second irl = 6 minutes ingame
+  // 10 seconds irl = 1 hour in game
+  const year = 86400
+  const month = 7200
+  const day = 240
+  const hour = 10
+
+  var curTime = time;
+
+  const curYear = Math.floor(curTime / year)
+  curTime = curTime % year
+  const curMonth = Math.floor(curTime / month)
+  curTime = curTime % month
+  const curDay = Math.floor(curTime / day)
+  curTime = curTime % day
+  const curHour = Math.floor(curTime / hour)
+  return "year: " + curYear + " month: " + curMonth + " day: " + curDay + " hour: " + curHour
+}
+
+function isDay(time) {
+  const day = time % 240
+  if (60 < day && day < 180) {
+    document.body.style.backgroundColor = "#ffe8ba";
+    return true
+  } 
+  document.body.style.backgroundColor = "#434f63";
+  return false
+}
+
+
+
 document.getElementById("save").addEventListener("click", () => {
   const jack = saveData();
   document.getElementById("saveData").value = jack;
@@ -55,7 +88,7 @@ document.getElementById("load").addEventListener("click", () => {
 
 // The pixel flinger express
 setInterval(function () {
-  document.getElementById("time").innerText = "time: " + sur.la.time;
+  document.getElementById("time").innerText = "time: " + getTimeString(sur.la.time) + "  isDay?: " + isDay(sur.la.time);
   document.getElementById("dolladollabillsyall").innerText =
     "money: " + sur.la.money;
   document.getElementById("itsover9000").innerText =
@@ -63,7 +96,7 @@ setInterval(function () {
   document.getElementById("acciopower").innerText = "demand: " + sur.la.demand;
   document.getElementById("fossilFuels:]").innerText =
     "fossil fuels: " + sur.la.fossil_fuel;
-    document.getElementById("buyFossilFuels").innerText =
+  document.getElementById("buyFossilFuels").innerText =
     "+1  Cost:" + sur.la.fossilFuelCost;
   let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
     .fill("#")
@@ -97,7 +130,7 @@ setInterval(function () {
     }
   }
   let stringvalue = "";
-  for(solar_panel of sur.la.inventory.solar_panels) {
+  for (solar_panel of sur.la.inventory.solar_panels) {
     stringvalue = stringvalue + solar_panel.powerOut + "\n";
   }
   document.getElementById("princessDiana").innerText = stringvalue;

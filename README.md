@@ -5,7 +5,7 @@ acciopower - power demand
 la_grid - the grid
 soux_la_grid - the grid under the grid
 
-princessDiana
+princessDiana - ?
 
 sur - object containing game state
 la - game state

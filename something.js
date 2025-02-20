@@ -21,7 +21,7 @@ const sur = {
       { powerOut: 20, cost: 30 },
       { powerOut: 40, cost: 40 },
     ],
-    inventory:{solar_panels:[{ powerOut: 10 }]},
+    inventory: { solar_panels: [{ powerOut: 10 }] },
     totalPower: 0,
   },
 };
@@ -63,7 +63,7 @@ setInterval(function () {
   document.getElementById("acciopower").innerText = "demand: " + sur.la.demand;
   document.getElementById("fossilFuels:]").innerText =
     "fossil fuels: " + sur.la.fossil_fuel;
-    document.getElementById("buyFossilFuels").innerText =
+  document.getElementById("buyFossilFuels").innerText =
     "+1  Cost:" + sur.la.fossilFuelCost;
   let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
     .fill("#")
@@ -96,12 +96,16 @@ setInterval(function () {
       td.style.backgroundColor = "lightGrey";
     }
   }
-  let stringvalue = "";
-  for(solar_panel of sur.la.inventory.solar_panels) {
-    stringvalue = stringvalue + solar_panel.powerOut + "\n";
-  }
-  document.getElementById("princessDiana").innerText = stringvalue;
+  const princessDianaElem = document.getElementById("princessDiana");
+  princessDianaElem.innerText = "";
 
+  for (solar_panel of sur.la.inventory.solar_panels) {
+    const spanElem = document.createElement("span");
+    spanElem.className = "thing";
+    spanElem.style.width = solar_panel.powerOut;
+    spanElem.style.height = solar_panel.powerOut;
+    princessDianaElem.appendChild(spanElem);
+  }
 }, 100);
 
 setInterval(function () {

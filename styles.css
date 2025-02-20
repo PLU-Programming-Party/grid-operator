@@ -1,0 +1,43 @@
+button {
+    cursor: pointer;
+}
+
+#la_grid td {
+    cursor: pointer;
+}
+
+#soux_la_grid td {
+    cursor: pointer;
+}
+
+#saveData{
+    display: none;
+}
+
+h1{
+    text-align: left;
+}
+
+.button-container{
+    align-items: right;
+}
+
+header{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.resources div{
+    display: inline-block;
+    margin: 0 1rem;
+}
+
+#demandometer{
+    text-align: center;
+}
+
+#princessDiana span{
+    background-color: green;
+    display: inline-block;
+}

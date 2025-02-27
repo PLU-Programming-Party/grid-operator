@@ -42,5 +42,36 @@ for (let i = 0; i < sur.la.fossil_fuel_plants.length; i++) {
   tr.appendChild(td);
 }
 
+const crime_le_table = document.createElement("table");
+crime_le_table.id = "crime_le_table";
+const c_tr = document.createElement("tr");
+crime_le_table.appendChild(c_tr);
+
+for (let i = 0; i < sur.la.barely_paid_interns.length; i++) {
+  const tc = document.createElement("td");
+  tc.id = `soux_la_table_${i}`
+  tc.style.backgroundColor = "#99aabb";
+  const leThing = sur.la.barely_paid_interns[i];
+  tc.innerText = `education level = ${leThing.levelOfEducation} cost = ${leThing.cost}`;
+  c_tr.appendChild(tc);
+}
+
+const intern_table = document.createElement("table");
+intern_table.id = "inter_list";
+const intern_table_tc = document.createElement("tr");
+intern_table.appendChild(intern_table_tc);
+
+for(let i = 0; i < sur.la.names_of_interns.length; i++) {
+  const tc = document.createElement("td");
+  tc.id = `intern_table_${i}`;
+  tc.style.backgroundColor = "#ab345a";
+  const leThing = sur.la.names_of_interns[i];
+  tc.innerText = `name = ${leThing.name} | what they do = ${leThing.activity}`;
+  intern_table_tc.appendChild(tc);
+}
+
+
 document.getElementById("la_grid").appendChild(sur_la_table);
 document.getElementById("soux_la_grid").appendChild(soux_la_table);
+document.getElementById("we_love_crime").appendChild(crime_le_table);
+document.getElementById("inter_list").appendChild(intern_table)

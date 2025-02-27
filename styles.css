@@ -10,6 +10,14 @@ button {
     cursor: pointer;
 }
 
+#we_love_crime td {
+    cursor: pointer;
+}
+
+#inter_list tr {
+    cursor: none;
+}
+
 #saveData{
     display: none;
 }
@@ -35,6 +43,7 @@ header{
 
 #demandometer{
     text-align: center;
+    user-select: none;
 }
 
 #princessDiana span{

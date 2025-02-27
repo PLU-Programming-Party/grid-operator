@@ -22,6 +22,17 @@ const sur = {
       { powerOut: 20, cost: 30 },
       { powerOut: 40, cost: 40 },
     ],
+    barely_paid_interns: [
+      { levelOfEducation: "12th grader", cost: 20},
+      { levelOfEducation: "8th grader", cost: 13},
+      { levelOfEducation: "5th grader", cost: 7},
+    ],
+    names_of_interns: [
+      { name: "Lucius", activity: "grab coffee"},
+      { name: "Matthew", activity: "looks cool"},
+      { name: "Duffy", activity: "deliveryman"},
+      { name: "Randy", activity: "gaming"},
+    ],
     inventory: { solar_panels: [{ powerOut: 10 }] },
     totalPower: 0,
   },
@@ -91,6 +102,8 @@ document.getElementById("save").addEventListener("click", () => {
 
 document.getElementById("load").addEventListener("click", () => {
   beepboop(10.5);
+  smoothOp.volume = 0;
+  // If you don't wanna save, load ain't working. bravo
   const newData = document.getElementById("saveData").value;
   loadData(newData);
 });
@@ -109,16 +122,30 @@ setInterval(function () {
     "fossil fuels: " + sur.la.fossil_fuel;
   document.getElementById("buyFossilFuels").innerText =
     "+1  Cost:" + sur.la.fossilFuelCost;
-  let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
-    .fill("#")
-    .join("");
+  
   const demandometer = document.getElementById("demandometer");
+  demandometer.style.zIndex = -1;
+
   if (sur.la.powerbalance >= 0) {
-    demandometer.innerText = "|" + sous_la_hashtag;
+
+    let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
+    .fill("😠")
+    .join("");
+
+    demandometer.innerText = sous_la_hashtag;
+    demandometer.style.transform = `rotate(${sur.la.powerbalance * 13}deg)`
     demandometer.style.color = "green";
+    demandometer.style.scale = sur.la.powerbalance * 10;
+
   } else {
-    demandometer.innerText = sous_la_hashtag + "|";
+    let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
+    .fill("😡")
+    .join("");
+
+    demandometer.innerText = sous_la_hashtag;
+    demandometer.style.transform = `rotate(${sur.la.powerbalance * 13}deg)`
     demandometer.style.color = "red";
+    demandometer.style.scale = sur.la.powerbalance * 10;
   }
 
   for (let i = 0; i < sur.la.solarPanels.length; i++) {

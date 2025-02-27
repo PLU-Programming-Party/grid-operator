@@ -1,6 +1,49 @@
 const sur_la_table = document.createElement("table");
 sur_la_table.id = "sur_la_table";
 
+function resizeImage(image, power) {
+  var canvas = document.createElement('canvas');
+  var maxWidth = 100 * (power/10); // Define the maximum width of the image
+  var maxHeight = 50 * (power/10); // Define the maximum height of the image
+  var width = image.width;
+  var height = image.height;
+
+  // Calculate the new dimensions, maintaining the aspect ratio
+  if (width > height) {
+    if (width > maxWidth) {
+      height *= maxWidth / width;
+      width = maxWidth;
+    }
+  } else {
+    if (height > maxHeight) {
+      width *= maxHeight / height;
+      height = maxHeight;
+    }
+  }
+
+  // Set the canvas dimensions to the new dimensions
+  canvas.width = width;
+  canvas.height = height;
+
+  // Draw the resized image on the canvas
+  var ctx = canvas.getContext('2d');
+  ctx.drawImage(image, 0, 0, width, height);
+
+  //FINISH LATER TOP
+  //const imageContainer = document.createElement('imageContainer');
+      
+  // set the initial random position for the image container
+  canvas.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
+  canvas.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
+  canvas.style.zIndex = 999999999;
+
+  // Insert the canvas into the DOM or use it otherwise
+  //imageContainer.appendChild(canvas);
+  //document.body.appendChild(imageContainer);
+  document.body.appendChild(canvas);
+  //FINISH LATER BOTTOM
+}
+
 
 const solar_tr = document.createElement("tr");
 sur_la_table.appendChild(solar_tr);
@@ -19,6 +62,10 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
       sur.la.inventory.solar_panels.push({powerOut: solarPanel.powerOut});
       solarPanel.cost = Math.round(solarPanel.cost * 1.05);
       td.innerText = `power: ${solarPanel.powerOut}  cost: ${solarPanel.cost}`;
+      const img = document.createElement('img');
+      img.src = 'images/fossil-fuels.jpg';
+      resizeImage(img, solarPanel.powerOut);
+      //document.body.appendChild(img);
     }
   };
   solar_tr.appendChild(td);

@@ -27,6 +27,11 @@ const sur = {
   },
 };
 
+function nmoop() {
+  smoothOp.muted = !smoothOp.muted;
+  document.getElementById("mute").innerText = smoothOp.muted ? "🔇" : "🔊";
+}
+
 function beepboop(playback) {
   const audio = new Audio('sounds/Boop-sound-effect.mp3');
   audio.playbackRate = playback;
@@ -125,7 +130,12 @@ setInterval(function () {
     const td = document.getElementById(`sur_la_table_${i}`)
     td.style.backgroundColor = "lightBlue";
     const solarPanel = sur.la.solarPanels[i];
-    td.innerText = `power: ${solarPanel.powerOut}  cost: ${solarPanel.cost}`;
+    td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
+    if(sur.la.money < solarPanel.cost){
+      td.classList.add("too-expensive");
+    } else {
+      td.classList.remove("too-expensive");
+    }
   }
 
   for (let i = 0; i < sur.la.fossil_fuel_plants.length; i++) {
@@ -133,10 +143,10 @@ setInterval(function () {
     td.style.backgroundColor = "lightGrey";
     const laPlant = sur.la.fossil_fuel_plants[i];
     if (!laPlant.isOn) {
-      td.innerText = "fossil fuel consumption = 0 power = 0";
+      td.innerText = "fossil fuel consumption = 0 \n power = 0";
       td.style.backgroundColor = "grey";
     } else {
-      td.innerText = `fossil fuel consumption = ${laPlant.fuelConsumption} power = ${laPlant.powerOut}`;
+      td.innerText = `fossil fuel consumption = ${laPlant.fuelConsumption} \n power = ${laPlant.powerOut}`;
       td.style.backgroundColor = "lightGrey";
     }
   }
@@ -146,8 +156,8 @@ setInterval(function () {
   for (solar_panel of sur.la.inventory.solar_panels) {
     const spanElem = document.createElement("span");
     spanElem.className = "thing";
-    spanElem.style.width = solar_panel.powerOut;
-    spanElem.style.height = solar_panel.powerOut;
+    spanElem.style.width = solar_panel.powerOut + "px";
+    spanElem.style.height = solar_panel.powerOut + "px";
     princessDianaElem.appendChild(spanElem);
   }
 }, 100);

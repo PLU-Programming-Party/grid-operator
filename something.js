@@ -103,21 +103,23 @@ document.getElementById("save").addEventListener("click", () => {
   beepboop(0.25);
   const jack = saveData();
   document.getElementById("saveData").value = jack;
+  window.location.hash = jack;
+  alert("Your data is saved.");
 });
 
 document.getElementById("load").addEventListener("click", () => {
   beepboop(10.5);
   smoothOp.volume = 0;
   // If you don't wanna save, load ain't working. bravo
-  const newData = document.getElementById("saveData").value;
-  loadData(newData);
-});
+  //const newData = document.getElementById("saveData").value;
+  loadData(decodeURI(window.location.hash.substring(1)));
+})
 
 // The pixel flinger express
 setInterval(function () {
   document.getElementById("time").innerText = "time: " + getTimeString(sur.la.time) + "  isDay?: " + isDay(sur.la.time);
   smoothOp.play();
-  smoothOp.playbackRate = sur.la.speedometer;
+  smoothOp.playbackRate = Math.sqrt(sur.la.speedometer);
   document.getElementById("dolladollabillsyall").innerText =
     "money: " + sur.la.money;
   document.getElementById("itsover9000").innerText =
@@ -130,6 +132,7 @@ setInterval(function () {
   
   const demandometer = document.getElementById("demandometer");
   demandometer.style.zIndex = -1;
+  demandometer.style.pointerEvents = "none";
 
   if (sur.la.powerbalance >= 0) {
 

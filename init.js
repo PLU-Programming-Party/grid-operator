@@ -1,5 +1,15 @@
 const sur_la_table = document.createElement("table");
 sur_la_table.id = "sur_la_table";
+//For loading save data
+try {
+const data = window.location.hash.substring(1);
+loadData(decodeURI(window.location.hash.substring(1)));
+} catch {
+  //Does nothing
+}
+window.addEventListener('hashchange', function() {
+  window.location.reload();
+});
 
 function resizeImage(image, power) {
   var canvas = document.createElement('canvas');

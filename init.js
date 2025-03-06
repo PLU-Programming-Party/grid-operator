@@ -1,4 +1,6 @@
 const sur_la_table = document.createElement("table");
+const tabla_de_turbinas = document.createElement("table");
+tabla_de_turbinas.id = "tabla_de_turbinas";
 sur_la_table.id = "sur_la_table";
 
 function resizeImage(image, power) {
@@ -52,7 +54,7 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
   td.id = `sur_la_table_${i}`
   td.style.backgroundColor = "lightBlue";
   const solarPanel = sur.la.solarPanels[i];
-  td.innerText = `power: ${solarPanel.powerOut}  cost: ${solarPanel.cost}`;
+  td.innerText = `power: ${solarPanel.powerOut} \n  cost: ${solarPanel.cost}`;
   // td.innerText = new Date()
   td.onclick = function () {
     const solarPanel = sur.la.solarPanels[i];
@@ -61,7 +63,7 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
       //sur.la.power = sur.la.power + solarPanel.powerOut;
       sur.la.inventory.solar_panels.push({powerOut: solarPanel.powerOut});
       solarPanel.cost = Math.round(solarPanel.cost * 1.05);
-      td.innerText = `power: ${solarPanel.powerOut}  cost: ${solarPanel.cost}`;
+      td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
       const img = document.createElement('img');
       img.src = 'images/fossil-fuels.jpg';
       resizeImage(img, solarPanel.powerOut);
@@ -70,6 +72,28 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
   };
   solar_tr.appendChild(td);
 }
+
+const turbinas_de_viento = document.createElement("tr");
+tabla_de_turbinas.appendChild(turbinas_de_viento);
+
+for(let i = 0; i < sur.la.windTurbines.length; i++){
+  const td = document.createElement("td");
+  td.id = `tabla_de_turbinas_${i}`
+  td.style.backgroundColor = "lightBlue";
+  const turbina = sur.la.windTurbines[i];
+  td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost}`
+  td.onclick = function () {
+    const turbina = sur.la.windTurbines[i];
+    if (sur.la.money >= turbina.cost) {
+      sur.la.money = sur.la.money - turbina.cost;
+      sur.la.inventory.wind_turbina.push({powerOut : turbina.powerOut});
+      turbina.cost = Math.round(turbina.cost * 2)
+      td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost}`
+    }
+  }
+  turbinas_de_viento.appendChild(td);
+}
+
 
 const soux_la_table = document.createElement("table");
 soux_la_table.id = "soux_la_table";
@@ -103,22 +127,6 @@ for (let i = 0; i < sur.la.barely_paid_interns.length; i++) {
   c_tr.appendChild(tc);
 }
 
-const intern_table = document.createElement("table");
-intern_table.id = "inter_list";
-const intern_table_tc = document.createElement("tr");
-intern_table.appendChild(intern_table_tc);
-
-for(let i = 0; i < sur.la.names_of_interns.length; i++) {
-  const tc = document.createElement("td");
-  tc.id = `intern_table_${i}`;
-  tc.style.backgroundColor = "#ab345a";
-  const leThing = sur.la.names_of_interns[i];
-  tc.innerText = `name = ${leThing.name} | what they do = ${leThing.activity}`;
-  intern_table_tc.appendChild(tc);
-}
-
-
 document.getElementById("la_grid").appendChild(sur_la_table);
 document.getElementById("soux_la_grid").appendChild(soux_la_table);
-document.getElementById("we_love_crime").appendChild(crime_le_table);
-document.getElementById("inter_list").appendChild(intern_table)
+document.getElementById("tabla_de_turbinas_divisor").append(tabla_de_turbinas);

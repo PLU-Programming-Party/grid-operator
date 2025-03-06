@@ -48,10 +48,15 @@ header{
 }
 
 #princessDiana span{
-    background-color: green;
+    background-color: red;
     display: inline-block;
-    /* width: 20px;
-    height: 20px; */
+    border: solid black 1px;
+    margin: 1px;
+}
+
+#princeShrek span{
+    background-color: blue;
+    display: inline-block;
     border: solid black 1px;
     margin: 1px;
 }

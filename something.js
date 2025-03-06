@@ -12,6 +12,8 @@ const sur = {
     powerbalance: 0,
     fossil_fuel: 2000,
     fossilFuelCost: 0,
+    timepo_de_dia : 1,
+    speedo_de_wind: 20,
     fossil_fuel_plants: [
       { powerOut: 30, fuelConsumption: 1, isOn: true },
       { powerOut: 30, fuelConsumption: 1, isOn: true },
@@ -22,18 +24,25 @@ const sur = {
       { powerOut: 20, cost: 30 },
       { powerOut: 40, cost: 40 },
     ],
+    windTurbines: [
+      { powerOut: 10, cost: 27.4 },
+      { powerOut: 20, cost: 33.33 },
+      { powerOut: 30, cost: 52.079123141 },
+    ],
     barely_paid_interns: [
-      { levelOfEducation: "12th grader", cost: 20},
-      { levelOfEducation: "8th grader", cost: 13},
-      { levelOfEducation: "5th grader", cost: 7},
+      { levelOfEducation: "12th grader", cost: 20 },
+      { levelOfEducation: "8th grader", cost: 13 },
+      { levelOfEducation: "5th grader", cost: 7 },
     ],
     names_of_interns: [
-      { name: "Lucius", activity: "grab coffee"},
-      { name: "Matthew", activity: "looks cool"},
-      { name: "Duffy", activity: "deliveryman"},
-      { name: "Randy", activity: "gaming"},
+      { name: "Lucius", activity: "grab coffee" },
+      { name: "Matthew", activity: "looks cool" },
+      { name: "Duffy", activity: "deliveryman" },
+      { name: "Randy", activity: "gaming" },
     ],
-    inventory: { solar_panels: [{ powerOut: 10 }] },
+    inventory: {
+      solar_panels: [{ powerOut: 10 }], wind_turbina: [{ powerOut: 10 }]
+    },
     totalPower: 0,
   },
 };
@@ -76,7 +85,7 @@ function getTimeString(time) {
   const hour = 10
 
   var curTime = time;
-
+  
   const curYear = Math.floor(curTime / year)
   curTime = curTime % year
   const curMonth = Math.floor(curTime / month)
@@ -84,15 +93,24 @@ function getTimeString(time) {
   const curDay = Math.floor(curTime / day)
   curTime = curTime % day
   const curHour = Math.floor(curTime / hour)
-  return "year: " + curYear + " month: " + curMonth + " day: " + curDay + " hour: " + curHour
+  
+  return "year: " + curYear + " month: " + curMonth + " day: " + curDay + " hour: " + curHour + " Windo del speedo : " + sur.la.speedo_de_wind + " centimeters per second";
 }
 
 function isDay(time) {
   const day = time % 240
   if (60 < day && day < 180) {
     document.body.style.backgroundColor = "#ffe8ba";
+    if(timepo_de_dia == 1){
+      sur.la.speedo_de_wind = Math.round(Math.random() * 50);
+      // sur.la.speedo_de_wind = 49;
+      timepo_de_dia = 0;
+
+    }
     return true
-  } 
+  }else{
+    timepo_de_dia = 1;
+  }
   document.body.style.backgroundColor = "#434f63";
   return false
 }
@@ -117,7 +135,7 @@ document.getElementById("load").addEventListener("click", () => {
 
 // The pixel flinger express
 setInterval(function () {
-  document.getElementById("time").innerText = "time: " + getTimeString(sur.la.time) + "  isDay?: " + isDay(sur.la.time);
+  document.getElementById("time").innerText = "time: " + getTimeString(sur.la.time);
   smoothOp.play();
   smoothOp.playbackRate = Math.sqrt(sur.la.speedometer);
   document.getElementById("dolladollabillsyall").innerText =
@@ -129,7 +147,7 @@ setInterval(function () {
     "fossil fuels: " + sur.la.fossil_fuel;
   document.getElementById("buyFossilFuels").innerText =
     "+1  Cost:" + sur.la.fossilFuelCost;
-  
+
   const demandometer = document.getElementById("demandometer");
   demandometer.style.zIndex = -1;
   demandometer.style.pointerEvents = "none";
@@ -137,23 +155,20 @@ setInterval(function () {
   if (sur.la.powerbalance >= 0) {
 
     let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
-    .fill("😠")
-    .join("");
+      .fill("😠")
+      .join("");
 
     demandometer.innerText = sous_la_hashtag;
-    demandometer.style.transform = `rotate(${sur.la.powerbalance * 13}deg)`
     demandometer.style.color = "green";
-    demandometer.style.scale = sur.la.powerbalance * 10;
 
   } else {
     let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
-    .fill("😡")
-    .join("");
+      .fill("😡")
+      .join("");
 
     demandometer.innerText = sous_la_hashtag;
-    demandometer.style.transform = `rotate(${sur.la.powerbalance * 13}deg)`
     demandometer.style.color = "red";
-    demandometer.style.scale = sur.la.powerbalance * 10;
+
   }
 
   for (let i = 0; i < sur.la.solarPanels.length; i++) {
@@ -161,7 +176,7 @@ setInterval(function () {
     td.style.backgroundColor = "lightBlue";
     const solarPanel = sur.la.solarPanels[i];
     td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
-    if(sur.la.money < solarPanel.cost){
+    if (sur.la.money < solarPanel.cost) {
       td.classList.add("too-expensive");
     } else {
       td.classList.remove("too-expensive");
@@ -189,6 +204,22 @@ setInterval(function () {
     spanElem.style.width = solar_panel.powerOut + "px";
     spanElem.style.height = solar_panel.powerOut + "px";
     princessDianaElem.appendChild(spanElem);
+    // if (sur.la.money < solarPanel.cost) {
+    //   td.classList.add("too-expensive");
+    // } else {
+    //   td.classList.remove("too-expensive");
+    // }
+  }
+
+  const princeShrek = document.getElementById("princeShrek");
+  princeShrek.innerText = "";
+
+  for (shrek of sur.la.inventory.wind_turbina) {
+    const spanElem = document.createElement("span");
+    spanElem.className = "cosa";
+    spanElem.style.width = shrek.powerOut + "px";
+    spanElem.style.height = shrek.powerOut + "px";
+    princeShrek.appendChild(spanElem);
   }
 }, 100);
 
@@ -203,7 +234,22 @@ setInterval(function () {
   }
   let surLaCleanPower = 0;
   for (solar_panel of sur.la.inventory.solar_panels) {
-    surLaCleanPower += solar_panel.powerOut;
+    if (isDay(sur.la.time)) {
+      surLaCleanPower += solar_panel.powerOut;
+    }
+  }
+  for(windTurbines of sur.la.inventory.wind_turbina){
+    if(sur.la.speedo_de_wind >= 10 && sur.la.speedo_de_wind < 25){
+      surLaCleanPower += windTurbines.powerOut * 0.9;
+    }else if(sur.la.speedo_de_wind >= 25 && sur.la.speedo_de_wind < 35){
+      surLaCleanPower += windTurbines.powerOut * 1.2;
+    }else if(sur.la.speedo_de_wind >= 35 && sur.la.speedo_de_wind < 45){
+      surLaCleanPower += windTurbines.powerOut * 1.7;
+    }else if (sur.la.speedo_de_wind < 48 && sur.la.speedo_de_wind >= 45){
+      surLaCleanPower += windTurbines.powerOut * 2;
+    }else if(sur.la.speedo_de_wind > 48){
+      surLaCleanPower += windTurbines.powerOut * 100000;
+    }
   }
   sur.la.totalPower = surLaDirtyPower + sur.la.power + surLaCleanPower;
   sur.la.time += sur.la.speedometer;

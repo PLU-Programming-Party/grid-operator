@@ -4,13 +4,15 @@ tabla_de_turbinas.id = "tabla_de_turbinas";
 sur_la_table.id = "sur_la_table";
 //For loading save data
 try {
-  const data = window.location.hash.substring(1);
-  loadData(decodeURI(window.location.hash.substring(1)));
+const data = window.location.hash.substring(1);
+loadData(decodeURI(window.location.hash.substring(1)), 0);
+
+
 } catch {
   //Does nothing
 }
-window.addEventListener('hashchange', function () {
-  window.location.reload();
+window.addEventListener('hashchange', function() {
+  loadData(decodeURI(window.location.hash.substring(1)));
 });
 
 function resizeImage(image, power) {
@@ -76,9 +78,9 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
 
       solarPanel.cost = Math.round(solarPanel.cost * 1.05);
       td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
-      const img = document.createElement('img');
-      img.src = 'images/fossil-fuels.jpg';
-      resizeImage(img, solarPanel.powerOut);
+      //const img = document.createElement('img');
+      //img.src = 'images/fossil-fuels.jpg';
+      //resizeImage(img, solarPanel.powerOut);
       //document.body.appendChild(img);
     }
   };

@@ -4,19 +4,19 @@ tabla_de_turbinas.id = "tabla_de_turbinas";
 sur_la_table.id = "sur_la_table";
 //For loading save data
 try {
-const data = window.location.hash.substring(1);
-loadData(decodeURI(window.location.hash.substring(1)));
+  const data = window.location.hash.substring(1);
+  loadData(decodeURI(window.location.hash.substring(1)));
 } catch {
   //Does nothing
 }
-window.addEventListener('hashchange', function() {
+window.addEventListener('hashchange', function () {
   window.location.reload();
 });
 
 function resizeImage(image, power) {
   var canvas = document.createElement('canvas');
-  var maxWidth = 100 * (power/10); // Define the maximum width of the image
-  var maxHeight = 50 * (power/10); // Define the maximum height of the image
+  var maxWidth = 100 * (power / 10); // Define the maximum width of the image
+  var maxHeight = 50 * (power / 10); // Define the maximum height of the image
   var width = image.width;
   var height = image.height;
 
@@ -43,7 +43,7 @@ function resizeImage(image, power) {
 
   //FINISH LATER TOP
   //const imageContainer = document.createElement('imageContainer');
-      
+
   // set the initial random position for the image container
   canvas.style.left = Math.floor(Math.random() * window.innerWidth) + "px";
   canvas.style.top = Math.floor(Math.random() * window.innerHeight) + "px";
@@ -70,8 +70,10 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
     const solarPanel = sur.la.solarPanels[i];
     if (sur.la.money >= solarPanel.cost) {
       sur.la.money = sur.la.money - solarPanel.cost;
-      //sur.la.power = sur.la.power + solarPanel.powerOut;
-      sur.la.inventory.solar_panels.push({powerOut: solarPanel.powerOut});
+      let five_o_clock_somewhere = sur.la.time;
+      let x = sur.la.inventory.solar_panels.push({ powerOut: solarPanel.powerOut, startTime: five_o_clock_somewhere });
+      sur.la.inventory.solar_panels.at(x).backgroundColor = "red";
+
       solarPanel.cost = Math.round(solarPanel.cost * 1.05);
       td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
       const img = document.createElement('img');
@@ -86,7 +88,7 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
 const turbinas_de_viento = document.createElement("tr");
 tabla_de_turbinas.appendChild(turbinas_de_viento);
 
-for(let i = 0; i < sur.la.windTurbines.length; i++){
+for (let i = 0; i < sur.la.windTurbines.length; i++) {
   const td = document.createElement("td");
   td.id = `tabla_de_turbinas_${i}`
   td.style.backgroundColor = "lightBlue";
@@ -96,7 +98,7 @@ for(let i = 0; i < sur.la.windTurbines.length; i++){
     const turbina = sur.la.windTurbines[i];
     if (sur.la.money >= turbina.cost) {
       sur.la.money = sur.la.money - turbina.cost;
-      sur.la.inventory.wind_turbina.push({powerOut : turbina.powerOut});
+      sur.la.inventory.wind_turbina.push({ powerOut: turbina.powerOut });
       turbina.cost = Math.round(turbina.cost * 2)
       td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost}`
     }

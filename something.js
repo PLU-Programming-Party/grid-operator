@@ -12,7 +12,7 @@ const sur = {
     powerbalance: 0,
     fossil_fuel: 2000,
     fossilFuelCost: 0,
-    timepo_de_dia : 1,
+    timepo_de_dia: 1,
     speedo_de_wind: 20,
     fossil_fuel_plants: [
       { powerOut: 30, fuelConsumption: 1, isOn: true },
@@ -41,7 +41,8 @@ const sur = {
       { name: "Randy", activity: "gaming" },
     ],
     inventory: {
-      solar_panels: [{ powerOut: 10 }], wind_turbina: [{ powerOut: 10 }]
+      solar_panels: [{ powerOut: 10, startTime: 0 }],
+      wind_turbina: [{ powerOut: 10, startTime: 0 }]
     },
     totalPower: 0,
   },
@@ -85,7 +86,7 @@ function getTimeString(time) {
   const hour = 10
 
   var curTime = time;
-  
+
   const curYear = Math.floor(curTime / year)
   curTime = curTime % year
   const curMonth = Math.floor(curTime / month)
@@ -93,7 +94,7 @@ function getTimeString(time) {
   const curDay = Math.floor(curTime / day)
   curTime = curTime % day
   const curHour = Math.floor(curTime / hour)
-  
+
   return "year: " + curYear + " month: " + curMonth + " day: " + curDay + " hour: " + curHour + " Windo del speedo : " + sur.la.speedo_de_wind + " centimeters per second";
 }
 
@@ -101,14 +102,14 @@ function isDay(time) {
   const day = time % 240
   if (60 < day && day < 180) {
     document.body.style.backgroundColor = "#ffe8ba";
-    if(timepo_de_dia == 1){
+    if (timepo_de_dia == 1) {
       sur.la.speedo_de_wind = Math.round(Math.random() * 50);
       // sur.la.speedo_de_wind = 49;
       timepo_de_dia = 0;
 
     }
     return true
-  }else{
+  } else {
     timepo_de_dia = 1;
   }
   document.body.style.backgroundColor = "#434f63";
@@ -203,6 +204,9 @@ setInterval(function () {
     spanElem.className = "thing";
     spanElem.style.width = solar_panel.powerOut + "px";
     spanElem.style.height = solar_panel.powerOut + "px";
+    // console.log(100 - (sur.la.time - solar_panel.startTime) / 100 );
+
+    spanElem.style.backgroundColor = `rgba(255, 0, 0, ${(100 - (sur.la.time - solar_panel.startTime)) / 100})`;
     princessDianaElem.appendChild(spanElem);
     // if (sur.la.money < solarPanel.cost) {
     //   td.classList.add("too-expensive");
@@ -238,16 +242,16 @@ setInterval(function () {
       surLaCleanPower += solar_panel.powerOut;
     }
   }
-  for(windTurbines of sur.la.inventory.wind_turbina){
-    if(sur.la.speedo_de_wind >= 10 && sur.la.speedo_de_wind < 25){
+  for (windTurbines of sur.la.inventory.wind_turbina) {
+    if (sur.la.speedo_de_wind >= 10 && sur.la.speedo_de_wind < 25) {
       surLaCleanPower += windTurbines.powerOut * 0.9;
-    }else if(sur.la.speedo_de_wind >= 25 && sur.la.speedo_de_wind < 35){
+    } else if (sur.la.speedo_de_wind >= 25 && sur.la.speedo_de_wind < 35) {
       surLaCleanPower += windTurbines.powerOut * 1.2;
-    }else if(sur.la.speedo_de_wind >= 35 && sur.la.speedo_de_wind < 45){
+    } else if (sur.la.speedo_de_wind >= 35 && sur.la.speedo_de_wind < 45) {
       surLaCleanPower += windTurbines.powerOut * 1.7;
-    }else if (sur.la.speedo_de_wind < 48 && sur.la.speedo_de_wind >= 45){
+    } else if (sur.la.speedo_de_wind < 48 && sur.la.speedo_de_wind >= 45) {
       surLaCleanPower += windTurbines.powerOut * 2;
-    }else if(sur.la.speedo_de_wind > 48){
+    } else if (sur.la.speedo_de_wind > 48) {
       surLaCleanPower += windTurbines.powerOut * 100000;
     }
   }

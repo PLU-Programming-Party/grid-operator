@@ -2,13 +2,19 @@ const rows = 3;
 const columns = 2;
 const smoothOp = new Audio('sounds/music.mp3');
 
+const on = {
+  the: {
+    chair: "person"
+  }
+};
+
 const sur = {
   la: {
     time: 0,
     power: 0,
     money: 100,
     demand: 0,
-    speedometer: 2,
+    speedometer: 0,
     powerbalance: 0,
     fossil_fuel: 2000,
     fossilFuelCost: 0,
@@ -58,9 +64,13 @@ function beepboop(playback) {
   audio.play();
 }
 
-function loadData(jack) {
+function loadData(jack, sped) {
   const load = JSON.parse(jack);
+  if (sped !== undefined) {
+    load.la.speedometer = sped;
+  }
   Object.assign(sur.la, load.la);
+  
 }
 
 function saveData() {
@@ -99,39 +109,19 @@ function getTimeString(time) {
 
 function isDay(time) {
   const day = time % 240
-  if (60 < day && day < 180) {
-    document.body.style.backgroundColor = "#ffe8ba";
-    if(timepo_de_dia == 1){
-      sur.la.speedo_de_wind = Math.round(Math.random() * 50);
-      // sur.la.speedo_de_wind = 49;
-      timepo_de_dia = 0;
-
-    }
-    return true
-  }else{
-    timepo_de_dia = 1;
-  }
-  document.body.style.backgroundColor = "#434f63";
-  return false
+  return (60 < day && day < 180);
 }
+
+
 
 
 
 document.getElementById("save").addEventListener("click", () => {
   beepboop(0.25);
   const jack = saveData();
-  document.getElementById("saveData").value = jack;
   window.location.hash = jack;
   alert("Your data is saved.");
 });
-
-document.getElementById("load").addEventListener("click", () => {
-  beepboop(10.5);
-  smoothOp.volume = 0;
-  // If you don't wanna save, load ain't working. bravo
-  //const newData = document.getElementById("saveData").value;
-  loadData(decodeURI(window.location.hash.substring(1)));
-})
 
 // The pixel flinger express
 setInterval(function () {
@@ -151,6 +141,12 @@ setInterval(function () {
   const demandometer = document.getElementById("demandometer");
   demandometer.style.zIndex = -1;
   demandometer.style.pointerEvents = "none";
+
+  if (isDay(sur.la.time)) {
+    document.body.style.backgroundColor = "#ffe8ba";
+  } else {
+    document.body.style.backgroundColor = "#434f63";
+  }
 
   if (sur.la.powerbalance >= 0) {
 
@@ -223,7 +219,20 @@ setInterval(function () {
   }
 }, 100);
 
+// Karen, the Manager of States
 setInterval(function () {
+
+  if (isDay(sur.la.time)) {
+    if(sur.la.timepo_de_dia == 1){
+      sur.la.speedo_de_wind = Math.round(Math.random() * 50);
+      sur.la.timepo_de_dia = 0;
+
+    }
+  } else {
+    sur.la.timepo_de_dia = 1;
+  }
+
+
   let surLaDirtyPower = 0;
   let surLaDirtyPowerConsumption = 0;
   for (laPlant of sur.la.fossil_fuel_plants) {
@@ -263,7 +272,7 @@ setInterval(function () {
     sur.la.fossil_fuel - surLaDirtyPowerConsumption * sur.la.speedometer,
     0
   );
-  sur.la.fossilFuelCost += 1;
+  sur.la.fossilFuelCost += 1 * sur.la.speedometer;
 }, 1000);
 
 

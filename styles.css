@@ -19,10 +19,6 @@ button {
     cursor: none;
 }
 
-#saveData{
-    display: none;
-}
-
 h1{
     text-align: left;
 }
@@ -87,9 +83,23 @@ header{
 }
 
 .introParagraph div {
+    font-size: 18px;
+    font-family: cursive;
+    font-weight: bold;
+    text-shadow: 0px 0px 4px white;
     display: block;
     flex-direction: column;
     gap: 10px;
     max-width: 600px;
     text-align: center;
 }
+
+table {
+    width: 101%;
+  }
+
+  td {
+    font-family: 'Courier New', Courier, monospace;
+    height: 50px;
+    border: solid 3px black;
+  }

@@ -1,11 +1,11 @@
 const rows = 3;
 const columns = 2;
-const smoothOp = new Audio('sounds/music.mp3');
+const smoothOp = new Audio("sounds/music.mp3");
 
 const on = {
   the: {
-    chair: "person"
-  }
+    chair: "person",
+  },
 };
 
 const sur = {
@@ -48,7 +48,7 @@ const sur = {
     ],
     inventory: {
       solar_panels: [{ powerOut: 10, startTime: 0 }],
-      wind_turbina: [{ powerOut: 10, startTime: 0 }]
+      wind_turbina: [{ powerOut: 10, startTime: 0 }],
     },
     totalPower: 0,
   },
@@ -60,7 +60,7 @@ function nmoop() {
 }
 
 function beepboop(playback) {
-  const audio = new Audio('sounds/Boop-sound-effect.mp3');
+  const audio = new Audio("sounds/Boop-sound-effect.mp3");
   audio.playbackRate = playback;
   audio.play();
 }
@@ -71,7 +71,6 @@ function loadData(jack, sped) {
     load.la.speedometer = sped;
   }
   Object.assign(sur.la, load.la);
-  
 }
 
 function saveData() {
@@ -90,32 +89,40 @@ function getTimeString(time) {
   // year month day hour
   // 1 second irl = 6 minutes ingame
   // 10 seconds irl = 1 hour in game
-  const year = 86400
-  const month = 7200
-  const day = 240
-  const hour = 10
+  const year = 86400;
+  const month = 7200;
+  const day = 240;
+  const hour = 10;
 
   var curTime = time;
 
-  const curYear = Math.floor(curTime / year)
-  curTime = curTime % year
-  const curMonth = Math.floor(curTime / month)
-  curTime = curTime % month
-  const curDay = Math.floor(curTime / day)
-  curTime = curTime % day
-  const curHour = Math.floor(curTime / hour)
+  const curYear = Math.floor(curTime / year);
+  curTime = curTime % year;
+  const curMonth = Math.floor(curTime / month);
+  curTime = curTime % month;
+  const curDay = Math.floor(curTime / day);
+  curTime = curTime % day;
+  const curHour = Math.floor(curTime / hour);
 
-  return "year: " + curYear + " month: " + curMonth + " day: " + curDay + " hour: " + curHour + " Windo del speedo : " + sur.la.speedo_de_wind + " centimeters per second";
+  return (
+    "year: " +
+    curYear +
+    " month: " +
+    curMonth +
+    " day: " +
+    curDay +
+    " hour: " +
+    curHour +
+    " Windo del speedo : " +
+    sur.la.speedo_de_wind +
+    " centimeters per second"
+  );
 }
 
 function isDay(time) {
-  const day = time % 240
-  return (60 < day && day < 180);
+  const day = time % 240;
+  return 60 < day && day < 180;
 }
-
-
-
-
 
 document.getElementById("save").addEventListener("click", () => {
   beepboop(0.25);
@@ -126,7 +133,8 @@ document.getElementById("save").addEventListener("click", () => {
 
 // The pixel flinger express
 setInterval(function () {
-  document.getElementById("time").innerText = "time: " + getTimeString(sur.la.time);
+  document.getElementById("time").innerText =
+    "time: " + getTimeString(sur.la.time);
   smoothOp.play();
   smoothOp.playbackRate = Math.sqrt(sur.la.speedometer);
   document.getElementById("dolladollabillsyall").innerText =
@@ -150,14 +158,12 @@ setInterval(function () {
   }
 
   if (sur.la.powerbalance >= 0) {
-
     let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
       .fill("😠")
       .join("");
 
     demandometer.innerText = sous_la_hashtag;
     demandometer.style.color = "green";
-
   } else {
     let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
       .fill("😡")
@@ -165,11 +171,10 @@ setInterval(function () {
 
     demandometer.innerText = sous_la_hashtag;
     demandometer.style.color = "red";
-
   }
 
   for (let i = 0; i < sur.la.solarPanels.length; i++) {
-    const td = document.getElementById(`sur_la_table_${i}`)
+    const td = document.getElementById(`sur_la_table_${i}`);
     td.style.backgroundColor = "lightBlue";
     const solarPanel = sur.la.solarPanels[i];
     td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
@@ -202,7 +207,9 @@ setInterval(function () {
     spanElem.style.height = solar_panel.powerOut + "px";
     // console.log(100 - (sur.la.time - solar_panel.startTime) / 100 );
 
-    spanElem.style.backgroundColor = `rgba(255, 0, 0, ${(100 - (sur.la.time - solar_panel.startTime)) / 100})`;
+    spanElem.style.backgroundColor = `rgba(255, 0, 0, ${
+      (100 - (sur.la.time - solar_panel.startTime)) / 100
+    })`;
     princessDianaElem.appendChild(spanElem);
     // if (sur.la.money < solarPanel.cost) {
     //   td.classList.add("too-expensive");
@@ -225,17 +232,14 @@ setInterval(function () {
 
 // Karen, the Manager of States
 setInterval(function () {
-
   if (isDay(sur.la.time)) {
-    if(sur.la.timepo_de_dia == 1){
+    if (sur.la.timepo_de_dia == 1) {
       sur.la.speedo_de_wind = Math.round(Math.random() * 50);
       sur.la.timepo_de_dia = 0;
-
     }
   } else {
     sur.la.timepo_de_dia = 1;
   }
-
 
   let surLaDirtyPower = 0;
   let surLaDirtyPowerConsumption = 0;
@@ -278,6 +282,3 @@ setInterval(function () {
   );
   sur.la.fossilFuelCost += 1 * sur.la.speedometer;
 }, 1000);
-
-
-

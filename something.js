@@ -26,14 +26,14 @@ const sur = {
       { powerOut: 30, fuelConsumption: 1, isOn: true },
     ],
     solarPanels: [
-      { powerOut: 10, cost: 20 },
-      { powerOut: 20, cost: 30 },
-      { powerOut: 40, cost: 40 },
+      { powerOut: 10, cost: 20, max_durability: 100 },
+      { powerOut: 20, cost: 30, max_durability: 200 },
+      { powerOut: 40, cost: 40, max_durability: 300 },
     ],
     windTurbines: [
-      { powerOut: 10, cost: 27.4 },
-      { powerOut: 20, cost: 33.33 },
-      { powerOut: 30, cost: 52.079123141 },
+      { powerOut: 10, cost: 27.4, max_durability: 100 },
+      { powerOut: 20, cost: 33.33, max_durability: 200 },
+      { powerOut: 30, cost: 52.079123141, max_durability: 300 },
     ],
     barely_paid_interns: [
       { levelOfEducation: "12th grader", cost: 20 },
@@ -47,8 +47,8 @@ const sur = {
       { name: "Randy", activity: "gaming" },
     ],
     inventory: {
-      solar_panels: [{ powerOut: 10, startTime: 0 }],
-      wind_turbina: [{ powerOut: 10, startTime: 0 }]
+      solar_panels: [{ powerOut: 10, startTime: 0, maxDurability: 100 }, { powerOut: 10, startTime: 0, maxDurability: 200 }],
+      wind_turbina: [{ powerOut: 10, startTime: 0,  maxDurability: 100 }]
     },
     totalPower: 0,
   },
@@ -143,6 +143,14 @@ setInterval(function () {
   demandometer.style.zIndex = -1;
   demandometer.style.pointerEvents = "none";
 
+  const bigPauseWord = document.getElementById("speedotronzoomsonicthree");
+  if (sur.la.speedometer == 0) {
+    bigPauseWord.style.visibility = "visible";
+  }
+   else {
+    bigPauseWord.style.visibility = "hidden";
+  }
+
   if (isDay(sur.la.time)) {
     document.body.style.backgroundColor = "#ffe8ba";
   } else {
@@ -172,13 +180,31 @@ setInterval(function () {
     const td = document.getElementById(`sur_la_table_${i}`)
     td.style.backgroundColor = "lightBlue";
     const solarPanel = sur.la.solarPanels[i];
-    td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
+    td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost} \n durability: ${solarPanel.max_durability}`;
     if (sur.la.money < solarPanel.cost) {
       td.classList.add("too-expensive");
     } else {
       td.classList.remove("too-expensive");
     }
   }
+
+  // Watchout
+
+  for (let i = 0; i < sur.la.windTurbines.length; i++) {
+    const td = document.getElementById(`tabla_de_turbinas_${i}`)
+    td.style.backgroundColor = "lightBlue";
+    const turbine = sur.la.windTurbines[i];
+    td.innerText = `power: ${turbine.powerOut} \n cost: ${turbine.cost} \n durability: ${turbine.max_durability}`;
+    if (sur.la.money < turbine.cost) {
+      console.log(td.classList)
+      td.classList.add("too-expensive");
+    } else {
+      
+      td.classList.remove("too-expensive");
+    }
+  }
+
+  //Watchout
 
   for (let i = 0; i < sur.la.fossil_fuel_plants.length; i++) {
     const td = document.getElementById(`soux_la_table_${i}`);
@@ -202,8 +228,15 @@ setInterval(function () {
     spanElem.style.height = solar_panel.powerOut + "px";
     // console.log(100 - (sur.la.time - solar_panel.startTime) / 100 );
 
-    spanElem.style.backgroundColor = `rgba(255, 0, 0, ${(100 - (sur.la.time - solar_panel.startTime)) / 100})`;
+    spanElem.style.backgroundColor = `rgba(255, 0, 0, ${(solar_panel.maxDurability - (sur.la.time - solar_panel.startTime)) / 100})`;
     princessDianaElem.appendChild(spanElem);
+
+    if (  (solar_panel.maxDurability - (sur.la.time - solar_panel.startTime)) / 10 < 0.1 ) {
+      const index = sur.la.inventory.solar_panels.indexOf(solar_panel);
+      if (index > -1) {
+        sur.la.inventory.solar_panels.splice(index, 1);
+      }
+    }
     // if (sur.la.money < solarPanel.cost) {
     //   td.classList.add("too-expensive");
     // } else {
@@ -219,7 +252,17 @@ setInterval(function () {
     spanElem.className = "cosa";
     spanElem.style.width = shrek.powerOut + "px";
     spanElem.style.height = shrek.powerOut + "px";
+
+
+    spanElem.style.backgroundColor = `rgba(0, 0, 255, ${(shrek.maxDurability - (sur.la.time - shrek.startTime)) / 100})`;
     princeShrek.appendChild(spanElem);
+
+    if((shrek.maxDurability - (sur.la.time - shrek.startTime)) / 100 < 0.1) {
+      const index2 = sur.la.inventory.wind_turbina.indexOf(shrek);
+      if(index2 > -1) {
+        sur.la.inventory.wind_turbina.splice(index2, 1);
+      }
+    }
   }
 }, 100);
 

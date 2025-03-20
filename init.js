@@ -66,18 +66,18 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
   td.id = `sur_la_table_${i}`
   td.style.backgroundColor = "lightBlue";
   const solarPanel = sur.la.solarPanels[i];
-  td.innerText = `power: ${solarPanel.powerOut} \n  cost: ${solarPanel.cost}`;
+  td.innerText = `power: ${solarPanel.powerOut} \n  cost: ${solarPanel.cost}  \n durability: ${solarPanel.max_durability}`;
   // td.innerText = new Date()
   td.onclick = function () {
     const solarPanel = sur.la.solarPanels[i];
     if (sur.la.money >= solarPanel.cost) {
       sur.la.money = sur.la.money - solarPanel.cost;
       let five_o_clock_somewhere = sur.la.time;
-      let x = sur.la.inventory.solar_panels.push({ powerOut: solarPanel.powerOut, startTime: five_o_clock_somewhere });
-      sur.la.inventory.solar_panels.at(x).backgroundColor = "red";
+      let x = sur.la.inventory.solar_panels.push({ powerOut: solarPanel.powerOut, startTime: five_o_clock_somewhere, maxDurability: solarPanel.max_durability });
+      // sur.la.inventory.solar_panels.at(x).backgroundColor = "red";
 
       solarPanel.cost = Math.round(solarPanel.cost * 1.05);
-      td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost}`;
+      td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost} \n durability: ${solarPanel.max_durability}`;
       //const img = document.createElement('img');
       //img.src = 'images/fossil-fuels.jpg';
       //resizeImage(img, solarPanel.powerOut);
@@ -95,14 +95,15 @@ for (let i = 0; i < sur.la.windTurbines.length; i++) {
   td.id = `tabla_de_turbinas_${i}`
   td.style.backgroundColor = "lightBlue";
   const turbina = sur.la.windTurbines[i];
-  td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost}`
+  td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost} \n durability:  ${turbina.max_durability}`;
   td.onclick = function () {
     const turbina = sur.la.windTurbines[i];
     if (sur.la.money >= turbina.cost) {
       sur.la.money = sur.la.money - turbina.cost;
-      sur.la.inventory.wind_turbina.push({ powerOut: turbina.powerOut });
+      let four_o_clock_somewhere = sur.la.time;
+      sur.la.inventory.wind_turbina.push({ powerOut: turbina.powerOut, startTime: four_o_clock_somewhere, maxDurability: turbina.max_durability  });
       turbina.cost = Math.round(turbina.cost * 2)
-      td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost}`
+      td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost} \n durability:  ${turbina.max_durability}`
     }
   }
   turbinas_de_viento.appendChild(td);

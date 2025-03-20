@@ -51,6 +51,7 @@ const sur = {
       wind_turbina: [{ powerOut: 10, startTime: 0 }],
     },
     totalPower: 0,
+    CHAOS: 0,
   },
 };
 
@@ -230,12 +231,60 @@ setInterval(function () {
   }
 }, 100);
 
+function checkForRandomEvent(temperature) {
+  const randomEvent = Math.random();
+  if (randomEvent < temperature) {
+    return { do: true, temp: 1 };
+  } else {
+    return { do: false, temp: temperature + 1.0}; // Set to 1.0 to ensure events always happen for testing and development
+  }
+}
+
+function doRandomEvent() {
+  const eventSelector = Math.random();
+  if (eventSelector < 0.2) {
+    alert("You have been hit by a hurricane!");
+    sur.la.speedo_de_wind = 100;
+  } else if (eventSelector < 0.4) {
+    alert("You have been hit by a tornado!");
+    sur.la.speedo_de_wind = 100;
+    sur.la.inventory.wind_turbina.pop();
+  } else if (eventSelector < 0.6) {
+    alert("The sun has exploded!");
+    sur.la.time = 180; // This technically constitutes time travel. Fix later to avoid paradoxes.
+    alert("...but will regenerate.");
+  } else if (eventSelector < 0.8) {
+    alert("Somebody *cough, cough* has declared 700% tariffs on everything!");
+    for (panel of sur.la.solarPanels) {
+      panel.cost = panel.cost * 8;
+      console.log(panel.cost);
+    }
+    for (turbine of sur.la.windTurbines) { // TODO: This is bugged. It adds the tariff price, but only updates the UI after a click.
+      turbine.cost = turbine.cost * 8;
+      console.log(panel.cost);
+    }
+  } else {
+    alert("You have been hit by a DOGE!");
+    sur.la.inventory.solar_panels = [];
+    sur.la.inventory.wind_turbina = [];
+    sur.la.money = 0;
+  }
+}
+
 // Karen, the Manager of States
 setInterval(function () {
   if (isDay(sur.la.time)) {
     if (sur.la.timepo_de_dia == 1) {
       sur.la.speedo_de_wind = Math.round(Math.random() * 50);
       sur.la.timepo_de_dia = 0;
+
+      // check if random event should occur
+      const randomEvent = checkForRandomEvent(sur.la.CHAOS);
+      sur.la.CHAOS = randomEvent.temp;
+      console.log(randomEvent.do, sur.la.CHAOS);
+      if(randomEvent.do) {
+        doRandomEvent(); // THIS SETS SPEEDO DE WIND TO 100
+      }
     }
   } else {
     sur.la.timepo_de_dia = 1;

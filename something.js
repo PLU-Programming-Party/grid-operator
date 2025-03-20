@@ -72,6 +72,7 @@ function loadData(jack, sped) {
     load.la.speedometer = sped;
   }
   Object.assign(sur.la, load.la);
+  
 }
 
 function saveData() {
@@ -86,44 +87,46 @@ function buyFossilFuels(amount) {
   }
 }
 
-function getTimeString(time) {
+function getTimeParts(time){
+
   // year month day hour
   // 1 second irl = 6 minutes ingame
   // 10 seconds irl = 1 hour in game
-  const year = 86400;
-  const month = 7200;
-  const day = 240;
-  const hour = 10;
+  const year = 86400
+  const month = 7200
+  const day = 240
+  const hour = 10
 
   var curTime = time;
 
-  const curYear = Math.floor(curTime / year);
-  curTime = curTime % year;
-  const curMonth = Math.floor(curTime / month);
-  curTime = curTime % month;
-  const curDay = Math.floor(curTime / day);
-  curTime = curTime % day;
-  const curHour = Math.floor(curTime / hour);
+  const curYear = Math.floor(curTime / year)
+  curTime = curTime % year
+  const curMonth = Math.floor(curTime / month)
+  curTime = curTime % month
+  const curDay = Math.floor(curTime / day)
+  curTime = curTime % day
+  const curHour = Math.floor(curTime / hour)
 
-  return (
-    "year: " +
-    curYear +
-    " month: " +
-    curMonth +
-    " day: " +
-    curDay +
-    " hour: " +
-    curHour +
-    " Windo del speedo : " +
-    sur.la.speedo_de_wind +
-    " centimeters per second"
-  );
+  return {year: curYear, month: curMonth, day: curDay, hour: curHour}
+}
+
+function getTimeString(time) {
+  const {year,month,day,hour} = getTimeParts(time)
+  // year month day hour
+  // 1 second irl = 6 minutes ingame
+  // 10 seconds irl = 1 hour in game
+
+  return "year: " + year + " month: " + month + " day: " + day + " hour: " + hour + " Windo del speedo : " + sur.la.speedo_de_wind + " centimeters per second";
 }
 
 function isDay(time) {
   const day = time % 240;
   return 60 < day && day < 180;
 }
+
+
+
+
 
 document.getElementById("save").addEventListener("click", () => {
   beepboop(0.25);
@@ -160,19 +163,35 @@ setInterval(function () {
     bigPauseWord.style.visibility = "hidden";
   }
 
+
+  const celestial_body = document.getElementById("celestial_body")
+  celestial_body.style.left = (window.innerWidth/12 * ((getTimeParts(sur.la.time).hour + 6 )%12)) + "px"
   if (isDay(sur.la.time)) {
     document.body.style.backgroundColor = "#ffe8ba";
+    if( sur.la.powerbalance >= 0) {
+      celestial_body.src = "images/cute_sun.jpg"
+    } else {
+      celestial_body.src = "images/pog_sun.png"
+    }
+
   } else {
     document.body.style.backgroundColor = "#434f63";
+    if( sur.la.powerbalance >= 0) {
+      celestial_body.src = "images/cute-moon-icon-cartoon-style_74102-7166.avif"
+    } else {
+      celestial_body.src = "images/angy_moon.webp"
+    }
   }
 
   if (sur.la.powerbalance >= 0) {
+
     let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
       .fill("😠")
       .join("");
 
     demandometer.innerText = sous_la_hashtag;
     demandometer.style.color = "green";
+
   } else {
     let sous_la_hashtag = Array(Math.abs(Math.round(sur.la.powerbalance * 10)))
       .fill("😡")
@@ -180,6 +199,7 @@ setInterval(function () {
 
     demandometer.innerText = sous_la_hashtag;
     demandometer.style.color = "red";
+
   }
 
   for (let i = 0; i < sur.la.solarPanels.length; i++) {
@@ -314,6 +334,7 @@ function doRandomEvent() {
 
 // Karen, the Manager of States
 setInterval(function () {
+
   if (isDay(sur.la.time)) {
     if (sur.la.timepo_de_dia == 1) {
       sur.la.speedo_de_wind = Math.round(Math.random() * 50);
@@ -330,6 +351,7 @@ setInterval(function () {
   } else {
     sur.la.timepo_de_dia = 1;
   }
+
 
   let surLaDirtyPower = 0;
   let surLaDirtyPowerConsumption = 0;
@@ -372,3 +394,6 @@ setInterval(function () {
   );
   sur.la.fossilFuelCost += 1 * sur.la.speedometer;
 }, 1000);
+
+
+

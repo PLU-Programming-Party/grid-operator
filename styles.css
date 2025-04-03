@@ -1,8 +1,3 @@
-html {
-    background: rgb(42, 83, 108);
-    background: linear-gradient(270deg, rgba(42, 83, 108, 1) 0%, rgba(154, 182, 186, 1) 48%, rgba(135, 158, 156, 1) 100%);
-}
-
 button {
     cursor: pointer;
     border-radius: 20px;

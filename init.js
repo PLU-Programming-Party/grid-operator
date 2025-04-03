@@ -76,7 +76,7 @@ for (let i = 0; i < sur.la.solarPanels.length; i++) {
       let x = sur.la.inventory.solar_panels.push({ powerOut: solarPanel.powerOut, startTime: five_o_clock_somewhere, maxDurability: solarPanel.max_durability });
       // sur.la.inventory.solar_panels.at(x).backgroundColor = "red";
 
-      solarPanel.cost = Math.round(solarPanel.cost * 1.05);
+      solarPanel.cost = Math.round(solarPanel.cost * sur.la.incraso_deCostaThree);
       td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost} \n durability: ${solarPanel.max_durability}`;
       //const img = document.createElement('img');
       //img.src = 'images/fossil-fuels.jpg';
@@ -102,7 +102,7 @@ for (let i = 0; i < sur.la.windTurbines.length; i++) {
       sur.la.money = sur.la.money - turbina.cost;
       let four_o_clock_somewhere = sur.la.time;
       sur.la.inventory.wind_turbina.push({ powerOut: turbina.powerOut, startTime: four_o_clock_somewhere, maxDurability: turbina.max_durability  });
-      turbina.cost = Math.round(turbina.cost * 2)
+      turbina.cost = Math.round(turbina.cost * sur.la.costa_da_inceaso)
       td.innerText = `power: ${turbina.powerOut} \n cost: ${turbina.cost} \n durability:  ${turbina.max_durability}`
     }
   }
@@ -132,15 +132,6 @@ const crime_le_table = document.createElement("table");
 crime_le_table.id = "crime_le_table";
 const c_tr = document.createElement("tr");
 crime_le_table.appendChild(c_tr);
-
-for (let i = 0; i < sur.la.barely_paid_interns.length; i++) {
-  const tc = document.createElement("td");
-  tc.id = `soux_la_table_${i}`
-  tc.style.backgroundColor = "#99aabb";
-  const leThing = sur.la.barely_paid_interns[i];
-  tc.innerText = `education level = ${leThing.levelOfEducation} cost = ${leThing.cost}`;
-  c_tr.appendChild(tc);
-}
 
 document.getElementById("la_grid").appendChild(sur_la_table);
 document.getElementById("soux_la_grid").appendChild(soux_la_table);

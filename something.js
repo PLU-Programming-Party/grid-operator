@@ -35,23 +35,17 @@ const sur = {
       { powerOut: 20, cost: 33.33, max_durability: 200 },
       { powerOut: 30, cost: 52.079123141, max_durability: 300 },
     ],
-    barely_paid_interns: [
-      { levelOfEducation: "12th grader", cost: 20 },
-      { levelOfEducation: "8th grader", cost: 13 },
-      { levelOfEducation: "5th grader", cost: 7 },
-    ],
-    names_of_interns: [
-      { name: "Lucius", activity: "grab coffee" },
-      { name: "Matthew", activity: "looks cool" },
-      { name: "Duffy", activity: "deliveryman" },
-      { name: "Randy", activity: "gaming" },
-    ],
     inventory: {
-      solar_panels: [{ powerOut: 10, startTime: 0, maxDurability: 100 }, { powerOut: 10, startTime: 0, maxDurability: 200 }],
-      wind_turbina: [{ powerOut: 10, startTime: 0,  maxDurability: 100 }]
+      solar_panels: [],
+      wind_turbina: []
     },
     totalPower: 0,
     CHAOS: 0,
+    costa_da_inceaso: 1.2, // Wind turbine price increase
+    incraso_deCostaThree: 1.1, // Solar panel price increase
+    thisisthevariablethatincreasesthedemand: 3,
+    variable_this_while_loop: 30,
+    superAngryModeCounter: 0
   },
 };
 
@@ -167,7 +161,8 @@ setInterval(function () {
   const celestial_body = document.getElementById("celestial_body")
   celestial_body.style.left = (window.innerWidth/12 * ((getTimeParts(sur.la.time).hour + 6 )%12)) + "px"
   if (isDay(sur.la.time)) {
-    document.body.style.backgroundColor = "#ffe8ba";
+    // document.body.style.backgroundColor = "#ffe8ba";
+    document.documentElement.style.background = "radial-gradient(circle, rgba(255,219,0,1) 0%, rgba(255,205,128,1) 23%, rgba(169,241,246,1) 100%)";
     if( sur.la.powerbalance >= 0) {
       celestial_body.src = "images/cute_sun.jpg"
     } else {
@@ -175,7 +170,8 @@ setInterval(function () {
     }
 
   } else {
-    document.body.style.backgroundColor = "#434f63";
+    // document.body.style.backgroundColor = "#434f63";
+    document.documentElement.style.background = "linear-gradient(270deg, rgba(42, 83, 108, 1) 0%, rgba(154, 182, 186, 1) 48%, rgba(135, 158, 156, 1) 100%)";
     if( sur.la.powerbalance >= 0) {
       celestial_body.src = "images/cute-moon-icon-cartoon-style_74102-7166.avif"
     } else {
@@ -353,6 +349,37 @@ setInterval(function () {
   }
 
 
+  let value = Math.round(sur.la.powerbalance * 10)
+
+  if (value <= -10) {
+    //super angry mode
+    sur.la.superAngryModeCounter += sur.la.speedometer
+  }
+  else {
+    if (sur.la.superAngryModeCounter > 0) {
+      sur.la.superAngryModeCounter -= sur.la.speedometer
+    }
+    else {
+      sur.la.superAngryModeCounter = 0
+    }
+  }
+
+  if (sur.la.superAngryModeCounter > 50) {
+    sur.la.speedometer = 0
+    document.getElementById("loser").style.display = "block"
+    document.getElementById("real_game").style.display = "none"
+  }
+
+  // Refactor later
+  let value2 = Math.round(sur.la.superAngryModeCounter / (50 * 0.33))
+  console.log(value2)
+  if (value2 > 0) {
+    document.getElementById("demandometer").className = `vibrate-${value2}`
+  }
+  else {
+    document.getElementById("demandometer").className = ""
+  }
+
   let surLaDirtyPower = 0;
   let surLaDirtyPowerConsumption = 0;
   for (laPlant of sur.la.fossil_fuel_plants) {
@@ -383,9 +410,9 @@ setInterval(function () {
   sur.la.totalPower = surLaDirtyPower + sur.la.power + surLaCleanPower;
   sur.la.time += sur.la.speedometer;
   sur.la.money += Math.round(
-    sur.la.speedometer * (Math.min(sur.la.demand, sur.la.totalPower) / 60)
+    sur.la.speedometer * (Math.min(sur.la.demand, sur.la.totalPower) / sur.la.variable_this_while_loop)
   );
-  sur.la.demand += sur.la.speedometer * 10;
+  sur.la.demand += sur.la.speedometer * sur.la.thisisthevariablethatincreasesthedemand;
   sur.la.powerbalance =
     (sur.la.totalPower - sur.la.demand) / (sur.la.totalPower + sur.la.demand);
   sur.la.fossil_fuel = Math.max(

@@ -327,9 +327,9 @@ setInterval(function () {
 function checkForRandomEvent(temperature) {
   const randomEvent = Math.random();
   if (randomEvent < temperature) {
-    return { do: true, temp: 1 };
+    return { do: true, temp: 0 };
   } else {
-    return { do: false, temp: temperature + 1.0}; // Set to 1.0 to ensure events always happen for testing and development
+    return { do: false, temp: temperature + 0.05}; // Set to 1.0 to ensure events always happen for testing and development
   }
 }
 
@@ -344,7 +344,7 @@ function doRandomEvent() {
     sur.la.inventory.wind_turbina.pop();
   } else if (eventSelector < 0.6) {
     alert("The sun has exploded!");
-    sur.la.time = 180; // This technically constitutes time travel. Fix later to avoid paradoxes.
+    sur.la.time += 120; // This technically constitutes time travel. Fix later to avoid paradoxes.
     alert("...but will regenerate.");
   } else if (eventSelector < 0.8) {
     alert("Somebody *cough, cough* has declared 700% tariffs on everything!");

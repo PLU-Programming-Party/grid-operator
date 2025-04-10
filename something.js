@@ -35,9 +35,15 @@ const sur = {
       { powerOut: 20, cost: 33.33, max_durability: 200 },
       { powerOut: 30, cost: 52.079123141, max_durability: 300 },
     ],
+    hydroElectrics: [
+      { powerOut: 200, cost: 200, max_durability: 500 },
+      { powerOut: 500, cost: 600, max_durability: 2000 },
+      { powerOut: 1000, cost: 1300, max_durability: 5000 },
+    ],
     inventory: {
       solar_panels: [],
-      wind_turbina: []
+      wind_turbina: [],
+      hydro_dams: [],
     },
     totalPower: 0,
     CHAOS: 0,
@@ -90,6 +96,7 @@ function getTimeParts(time){
   const month = 7200
   const day = 240
   const hour = 10
+  const minute = 0.16667
 
   var curTime = time;
 
@@ -100,17 +107,22 @@ function getTimeParts(time){
   const curDay = Math.floor(curTime / day)
   curTime = curTime % day
   const curHour = Math.floor(curTime / hour)
+  curTime = curTime % hour
+  const curMinute = Math.floor(curTime / minute)
 
-  return {year: curYear, month: curMonth, day: curDay, hour: curHour}
+  const cursedHours = curHour + (curMinute / 60)
+  // If hour is 5, minute is 30, then cursedHours is 5.5
+
+  return {year: curYear, month: curMonth, day: curDay, hour: curHour, minute: curMinute, badhours: cursedHours}
 }
 
 function getTimeString(time) {
-  const {year,month,day,hour} = getTimeParts(time)
+  const {year,month,day,hour,minute} = getTimeParts(time)
   // year month day hour
   // 1 second irl = 6 minutes ingame
   // 10 seconds irl = 1 hour in game
 
-  return "year: " + year + " month: " + month + " day: " + day + " hour: " + hour + " Windo del speedo : " + sur.la.speedo_de_wind + " centimeters per second";
+  return "year: " + year + " month: " + month + " day: " + day + " hour: " + hour + " minute:" + minute +" Windo del speedo : " + sur.la.speedo_de_wind + " centimeters per second";
 }
 
 function isDay(time) {
@@ -159,7 +171,15 @@ setInterval(function () {
 
 
   const celestial_body = document.getElementById("celestial_body")
-  celestial_body.style.left = (window.innerWidth/12 * ((getTimeParts(sur.la.time).hour + 6 )%12)) + "px"
+  celestial_body.style.left = (window.innerWidth/12 * ((getTimeParts(sur.la.time).badhours + 6 )%12) - celestial_body.width / 2) + "px"
+  const celestial_magic_value = Math.cos((getTimeParts(sur.la.time).badhours + 6 )%12 / 2)
+
+  celestial_body.style.top = (celestial_magic_value * 80 + 80)+ "px";
+  //celestial_body.style.top = Math.sqrt(2 - ((getTimeParts(sur.la.time).hour + 6 )%12) ** 2) * 80 + 80 + "px";
+
+
+  // Use this later: x^{2}+y^{2}=2
+
   if (isDay(sur.la.time)) {
     // document.body.style.backgroundColor = "#ffe8ba";
     document.documentElement.style.background = "radial-gradient(circle, rgba(255,219,0,1) 0%, rgba(255,205,128,1) 23%, rgba(169,241,246,1) 100%)";
@@ -218,6 +238,22 @@ setInterval(function () {
     const turbine = sur.la.windTurbines[i];
     td.innerText = `power: ${turbine.powerOut} \n cost: ${turbine.cost} \n durability: ${turbine.max_durability}`;
     if (sur.la.money < turbine.cost) {
+      console.log(td.classList)
+      td.classList.add("too-expensive");
+    } else {
+      
+      td.classList.remove("too-expensive");
+    }
+  }
+
+  // ._.
+
+  for (let i = 0; i < sur.la.hydroElectrics.length; i++) {
+    const td = document.getElementById(`hydroelectric_table${i}`)
+    td.style.backgroundColor = "pink";
+    const hydro = sur.la.hydroElectrics[i];
+    td.innerText = `power: ${hydro.powerOut} \n cost: ${hydro.cost} \n durability: ${hydro.max_durability}`;
+    if (sur.la.money < hydro.cost) {
       console.log(td.classList)
       td.classList.add("too-expensive");
     } else {

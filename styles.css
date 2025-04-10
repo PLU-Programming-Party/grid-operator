@@ -12,6 +12,7 @@ button {
     position: absolute;
     top: 50px;
     left: 0px;
+    z-index: -10;
 
 
 }

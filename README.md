@@ -9,3 +9,5 @@ princessDiana - ?
 
 sur - object containing game state
 la - game state
+
+programmer party 5.0 will soon feature hieroglyphics as code.

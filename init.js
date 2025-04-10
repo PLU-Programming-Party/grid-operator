@@ -109,6 +109,29 @@ for (let i = 0; i < sur.la.windTurbines.length; i++) {
   turbinas_de_viento.appendChild(td);
 }
 
+const hydroelectric_tr = document.createElement("tr");
+const hydroelectric_table = document.createElement("table");
+hydroelectric_table.appendChild(hydroelectric_tr)
+
+for (let i = 0; i < sur.la.hydroElectrics.length; i++) {
+  const td = document.createElement("td");
+  td.id = `hydroelectric_table${i}`
+  td.style.backgroundColor = "pink";
+  const hydros = sur.la.hydroElectrics[i];
+  td.innerText = `power: ${hydros.powerOut} \n cost: ${hydros.cost} \n durability:  ${hydros.max_durability}`;
+  td.onclick = function () {
+    const hydros = sur.la.hydroElectrics[i];
+    if (sur.la.money >= hydros.cost) {
+      sur.la.money = sur.la.money - hydros.cost;
+      let four_o_clock_somewhere = sur.la.time;
+      sur.la.inventory.hydroElectrics.push({ powerOut: hydros.powerOut, startTime: four_o_clock_somewhere, maxDurability: hydros.max_durability  });
+      hydros.cost = Math.round(hydros.cost * sur.la.costa_da_inceaso)
+      td.innerText = `power: ${hydros.powerOut} \n cost: ${hydros.cost} \n durability:  ${hydros.max_durability}`
+    }
+  }
+  hydroelectric_tr.appendChild(td);
+}
+
 
 const soux_la_table = document.createElement("table");
 soux_la_table.id = "soux_la_table";
@@ -136,3 +159,4 @@ crime_le_table.appendChild(c_tr);
 document.getElementById("la_grid").appendChild(sur_la_table);
 document.getElementById("soux_la_grid").appendChild(soux_la_table);
 document.getElementById("tabla_de_turbinas_divisor").append(tabla_de_turbinas);
+document.getElementById("hydroelectric_dam_buying_table").append(hydroelectric_table);

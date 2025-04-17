@@ -36,9 +36,9 @@ const sur = {
       { powerOut: 30, cost: 52.079123141, max_durability: 300 },
     ],
     hydroElectrics: [
-      { powerOut: 200, cost: 200, max_durability: 500 },
-      { powerOut: 500, cost: 600, max_durability: 2000 },
-      { powerOut: 1000, cost: 1300, max_durability: 5000 },
+      { powerOut: 60, cost: 100, max_durability: 500 },
+      { powerOut: 120, cost: 200, max_durability: 2000 },
+      { powerOut: 250, cost: 400, max_durability: 5000 },
     ],
     inventory: {
       solar_panels: [],
@@ -49,6 +49,7 @@ const sur = {
     CHAOS: 0,
     costa_da_inceaso: 1.2, // Wind turbine price increase
     incraso_deCostaThree: 1.1, // Solar panel price increase
+    hydro_dam_price_increase_multiplier: 1.05,
     thisisthevariablethatincreasesthedemand: 3,
     variable_this_while_loop: 30,
     superAngryModeCounter: 0
@@ -143,6 +144,8 @@ document.getElementById("save").addEventListener("click", () => {
 
 // The pixel flinger express
 setInterval(function () {
+  const debugElement = document.getElementById("debug")
+
   document.getElementById("time").innerText =
     "time: " + getTimeString(sur.la.time);
   smoothOp.play();
@@ -220,7 +223,7 @@ setInterval(function () {
 
   for (let i = 0; i < sur.la.solarPanels.length; i++) {
     const td = document.getElementById(`sur_la_table_${i}`);
-    td.style.backgroundColor = "lightBlue";
+    td.style.backgroundColor = "#ff4040"
     const solarPanel = sur.la.solarPanels[i];
     td.innerText = `power: ${solarPanel.powerOut} \n cost: ${solarPanel.cost} \n durability: ${solarPanel.max_durability}`;
     if (sur.la.money < solarPanel.cost) {
@@ -234,11 +237,11 @@ setInterval(function () {
 
   for (let i = 0; i < sur.la.windTurbines.length; i++) {
     const td = document.getElementById(`tabla_de_turbinas_${i}`)
-    td.style.backgroundColor = "lightBlue";
+    td.style.backgroundColor = "#4040ff";
     const turbine = sur.la.windTurbines[i];
     td.innerText = `power: ${turbine.powerOut} \n cost: ${turbine.cost} \n durability: ${turbine.max_durability}`;
     if (sur.la.money < turbine.cost) {
-      console.log(td.classList)
+      //console.log(td.classList)
       td.classList.add("too-expensive");
     } else {
       
@@ -248,13 +251,16 @@ setInterval(function () {
 
   // ._.
 
+
+  
   for (let i = 0; i < sur.la.hydroElectrics.length; i++) {
     const td = document.getElementById(`hydroelectric_table${i}`)
-    td.style.backgroundColor = "pink";
+    
+    td.style.backgroundColor = "#40ff40";
     const hydro = sur.la.hydroElectrics[i];
     td.innerText = `power: ${hydro.powerOut} \n cost: ${hydro.cost} \n durability: ${hydro.max_durability}`;
     if (sur.la.money < hydro.cost) {
-      console.log(td.classList)
+      //console.log(td.classList)
       td.classList.add("too-expensive");
     } else {
       
@@ -322,6 +328,31 @@ setInterval(function () {
       }
     }
   }
+
+  const hydro_dam_stock = document.getElementById("hydro_dam_stock")
+  hydro_dam_stock.innerText = ""
+  
+  for (hydro_dam of sur.la.inventory.hydro_dams) {
+    const spanElem = document.createElement("span")
+    spanElem.className = "do we care about this"
+    spanElem.style.width = hydro_dam.powerOut + "px"
+    spanElem.style.height = hydro_dam.powerOut + "px"
+    
+    spanElem.style.backgroundColor = `rgba(0, 255, 0, ${(hydro_dam.maxDurability - (sur.la.time - hydro_dam.startTime)) / 100})`;
+    hydro_dam_stock.appendChild(spanElem)
+
+    if((hydro_dam.maxDurability - (sur.la.time - hydro_dam.startTime)) / 100 < 0.1) {
+      const index2 = sur.la.inventory.hydro_dams.indexOf(hydro_dam);
+      if(index2 > -1) {
+        sur.la.inventory.hydro_dams.splice(index2, 1);
+      }
+    }
+  }
+
+  
+
+
+
 }, 100);
 
 function checkForRandomEvent(temperature) {
@@ -443,6 +474,12 @@ setInterval(function () {
       surLaCleanPower += windTurbines.powerOut * 100000;
     }
   }
+
+  for (hydro_dam of sur.la.inventory.hydro_dams) {
+    surLaCleanPower += hydro_dam.powerOut
+  }
+
+
   sur.la.totalPower = surLaDirtyPower + sur.la.power + surLaCleanPower;
   sur.la.time += sur.la.speedometer;
   sur.la.money += Math.round(

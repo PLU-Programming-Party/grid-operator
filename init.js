@@ -120,12 +120,15 @@ for (let i = 0; i < sur.la.hydroElectrics.length; i++) {
   const hydros = sur.la.hydroElectrics[i];
   td.innerText = `power: ${hydros.powerOut} \n cost: ${hydros.cost} \n durability:  ${hydros.max_durability}`;
   td.onclick = function () {
+    console.log("test")
+
+
     const hydros = sur.la.hydroElectrics[i];
     if (sur.la.money >= hydros.cost) {
       sur.la.money = sur.la.money - hydros.cost;
       let four_o_clock_somewhere = sur.la.time;
-      sur.la.inventory.hydroElectrics.push({ powerOut: hydros.powerOut, startTime: four_o_clock_somewhere, maxDurability: hydros.max_durability  });
-      hydros.cost = Math.round(hydros.cost * sur.la.costa_da_inceaso)
+      sur.la.inventory.hydro_dams.push({ powerOut: hydros.powerOut, startTime: four_o_clock_somewhere, maxDurability: hydros.max_durability  });
+      hydros.cost = Math.round(hydros.cost * sur.la.hydro_dam_price_increase_multiplier)
       td.innerText = `power: ${hydros.powerOut} \n cost: ${hydros.cost} \n durability:  ${hydros.max_durability}`
     }
   }

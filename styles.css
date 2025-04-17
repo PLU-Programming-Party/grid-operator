@@ -53,14 +53,8 @@ header {
     user-select: none;
 }
 
-#princessDiana span {
-    /* background-color: red; */
-    display: inline-block;
-    border: solid black 1px;
-    margin: 1px;
-}
 
-#princeShrek span {
+.stock span {
     background-color: blue;
     display: inline-block;
     border: solid black 1px;
@@ -73,11 +67,13 @@ header {
 
 }
 
-#tabla_de_turbinas_divisor td.too-expensive {
+td.too-expensive {
     cursor: not-allowed;
     text-decoration: line-through;
 
 }
+
+
 
 .theTitleSlide div {
     display: flex;
@@ -143,10 +139,10 @@ body {
 
 table {
     width: 101%;
-  }
+}
 
-  td {
+td {
     font-family: 'Courier New', Courier, monospace;
     height: 50px;
     border: solid 3px black;
-  }
+}

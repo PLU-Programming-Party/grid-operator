@@ -55,12 +55,16 @@
   </div>
   <div id="loser" style="display: none;">
     you lost
+    <img src="images/lose.png">
+    <button id="restart_game" onclick="window.location.reload()">Restart Game</button>
+    <iframe width="1080" height="720" src="https://www.youtube.com/embed/L_fcrOyoWZ8?autoplay=1&mute=1"></iframe>
   </div>
   <div id="real_game" style="display: none">
     <header>
       <h1>GRID OPERATOR</h1>
       <div class="resources">
         <div><img id = "celestial_body" src="images/pog_sun.png"></div>
+        <div id="debug">sanity check</div>
         <div id="time">time:</div>
         <div id="dolladollabillsyall">money:</div>
         <div id="itsover9000">power:</div>
@@ -75,6 +79,7 @@
         <button id="play" onclick="sur.la.speedometer = 9">>>></button>
         <button id="save">Save</button>
         <button id="mute" onclick="nmoop()">🔊</button>
+        <button id="free monies" onclick="sur.la.money += 99999">free monies</button>
     
       </div>
     </header>
@@ -97,8 +102,9 @@
     <h3>Non-Renewables Market (sponsored by enron)</h3>
     <div id="soux_la_grid"></div>
     <!-- this is where we store inventory and stuff.-->
-    <div id="princessDiana"></div>
-    <div id="princeShrek"></div>
+    <div class="stock" id="princessDiana"></div>
+    <div class="stock" id="princeShrek"></div>
+    <div class="stock" id="hydro_dam_stock"></div>
   </div>
 
 

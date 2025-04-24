@@ -485,6 +485,7 @@ setInterval(function () {
   sur.la.money += Math.round(
     sur.la.speedometer * (Math.min(sur.la.demand, sur.la.totalPower) / sur.la.variable_this_while_loop)
   );
+ sur.la.money = (Math.round(sur.la.money * 100) / 100).toFixed(2);
   sur.la.demand += sur.la.speedometer * sur.la.thisisthevariablethatincreasesthedemand;
   sur.la.powerbalance =
     (sur.la.totalPower - sur.la.demand) / (sur.la.totalPower + sur.la.demand);

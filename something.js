@@ -52,7 +52,8 @@ const sur = {
     hydro_dam_price_increase_multiplier: 1.05,
     thisisthevariablethatincreasesthedemand: 3,
     variable_this_while_loop: 30,
-    superAngryModeCounter: 0
+    superAngryModeCounter: 0,
+    superHappyModeCounter: 0
   },
 };
 
@@ -447,6 +448,30 @@ setInterval(function () {
     document.getElementById("demandometer").className = ""
   }
 
+// Super happy mode :)))
+ if (value >= 3 && sur.la.fossil_fuel_plants.every(plant => !plant.isOn)) {
+    sur.la.superHappyModeCounter += sur.la.speedometer;
+ } else {
+    sur.la.superHappyModeCounter = 0;
+ }
+
+ if (sur.la.superHappyModeCounter > 50) {
+    sur.la.speedometer = 0
+    document.getElementById("greatestWinner").style.display = "block"
+    document.getElementById("real_game").style.display = "none"
+ }
+
+
+ let value2_2 = Math.round(sur.la.superHappyModeCounter / (50 * 0.33))
+  console.log(value2_2)
+  if (value2_2 > 0) {
+    document.getElementById("demandometer").className = `vibrate-${value2_2}`
+  }
+  else {
+    document.getElementById("demandometer").className = ""
+  }
+
+  // I don't know what everything below this is
   let surLaDirtyPower = 0;
   let surLaDirtyPowerConsumption = 0;
   for (laPlant of sur.la.fossil_fuel_plants) {
@@ -485,7 +510,7 @@ setInterval(function () {
   sur.la.money += Math.round(
     sur.la.speedometer * (Math.min(sur.la.demand, sur.la.totalPower) / sur.la.variable_this_while_loop)
   );
- sur.la.money = (Math.round(sur.la.money * 100) / 100).toFixed(2);
+  sur.la.money = (Math.round(sur.la.money * 100) / 100);//.toFixed(2);
   sur.la.demand += sur.la.speedometer * sur.la.thisisthevariablethatincreasesthedemand;
   sur.la.powerbalance =
     (sur.la.totalPower - sur.la.demand) / (sur.la.totalPower + sur.la.demand);
